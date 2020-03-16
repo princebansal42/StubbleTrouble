@@ -1,0 +1,28 @@
+{
+    "name": "stubbletrouble",
+    "version": "1.0.0",
+    "description": "App to Solve Stubble Management Issue",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "server": "nodemon index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/princebansal42/StubbleTrouble.git"
+    },
+    "author": "Prince Bansal",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/princebansal42/StubbleTrouble/issues"
+    },
+    "homepage": "https://github.com/princebansal42/StubbleTrouble#readme",
+    "dependencies": {
+        "config": "^3.3.0",
+        "express": "^4.17.1",
+        "mongoose": "^5.9.4"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
+}

@@ -40,9 +40,12 @@ router.post(
                     errors: [{ msg: "Password do not Match. Try Again." }]
                 });
             }
+
+            const { id, userType } = user;
             const payload = {
                 user: {
-                    id: user.id
+                    id,
+                    userType
                 }
             };
             jwt.sign(

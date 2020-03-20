@@ -46,6 +46,19 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
         const { name, email, password, userType } = req.body;
+
+        // TODO - Remove Admin and Transport from array
+        // ALSO CHECK HTTP RESPONSE CODE
+
+        if (["farmer", "buyer", "admin", "transport"].indexOf(userType) == -1) {
+            return res.status(403).json({
+                errors: [
+                    {
+                        msg: "Wrong User Type"
+                    }
+                ]
+            });
+        }
         try {
             // Check if user already exist
 

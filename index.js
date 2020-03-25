@@ -5,12 +5,12 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 connectDB();
 
+app.use(cors());
 app.use(express.json({ extended: false }));
 
 // Routes Defined here
 const routes = require("./routes");
 app.use(routes);
 
-app.use(cors());
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Server running at " + PORT));

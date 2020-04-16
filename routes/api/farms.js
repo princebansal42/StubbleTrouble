@@ -19,7 +19,7 @@ router.get("/", auth, async (req, res) => {
     let query = {};
     if (userType === "farmer")
         query = {
-            owner: id
+            owner: id,
         };
     try {
         const farms = await Farm.find(query);
@@ -38,25 +38,17 @@ router.post(
     "/",
     [
         auth,
-        check("area", "Area is Required")
-            .not()
-            .isEmpty(),
-        check("lat", "Latitude is Required")
-            .not()
-            .isEmpty(),
-        check("long", "Longitude is Required")
-            .not()
-            .isEmpty(),
-        check("address", "Address is Required")
-            .not()
-            .isEmpty()
+        check("area", "Area is Required").not().isEmpty(),
+        check("lat", "Latitude is Required").not().isEmpty(),
+        check("long", "Longitude is Required").not().isEmpty(),
+        check("address", "Address is Required").not().isEmpty(),
     ],
     async (req, res) => {
         // Check if the user adding farm is a farmer
         const { id, userType } = req.user;
         if (userType !== "farmer")
             return res.status(401).json({
-                errors: [{ msg: "Not Authorised to Access this area." }]
+                errors: [{ msg: "Not Authorised to Access this area." }],
             });
 
         const errors = validationResult(req);
@@ -72,8 +64,8 @@ router.post(
                 address,
                 location: {
                     lat,
-                    long
-                }
+                    long,
+                },
             });
             farm = await farm.save();
             return res.json(farm);
@@ -84,6 +76,26 @@ router.post(
     }
 );
 
+// @route GET api/farms/:id
+// @desc Get a Farm
+// @access Private
+
+router.get("/", auth, async (req, res) => {
+    const { id, userType } = req.user;
+    if (["admin", "farmer"].indexOf(userType) === -1)
+        return res
+            .status(401)
+            .json({ errors: [{ msg: "Not Authorised to Access this area." }] });
+
+    try {
+        const farm = await Farm.findById(req.params.id);
+        return res.json(farm);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).send("Server Error");
+    }
+});
+
 // @route   DELETE api/farms/:id
 // @desc    Delete a Farm
 // @access  Private
@@ -93,7 +105,7 @@ router.delete("/:farm_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     if (userType !== "farmer")
         return res.status(401).json({
-            errors: [{ msg: "User not authorized" }]
+            errors: [{ msg: "User not authorized" }],
         });
     try {
         const farm = await Farm.findById(req.params.farm_id);
@@ -128,7 +140,7 @@ router.put("/:farm_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     if (userType !== "farmer")
         return res.status(401).json({
-            errors: [{ msg: "User not authorized" }]
+            errors: [{ msg: "User not authorized" }],
         });
     try {
         let farm = await Farm.findById(req.params.farm_id);
@@ -146,7 +158,7 @@ router.put("/:farm_id", auth, async (req, res) => {
         farm.area = area;
         farm.location = {
             lat,
-            long
+            long,
         };
         farm.address = address;
         farm = await farm.save();

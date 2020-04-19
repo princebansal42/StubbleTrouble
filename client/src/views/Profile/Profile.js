@@ -1,51 +1,29 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Tabs, Tab, Divider, colors } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 import { Page } from 'components';
-import { Header, Timeline, Connections, Projects, Reviews } from './components';
+import { Header, ProfileDetails } from './components';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
-  inner: {
-    width: theme.breakpoints.values.lg,
-    maxWidth: '100%',
-    margin: '0 auto',
+  root: {
     padding: theme.spacing(3)
   },
-  divider: {
-    backgroundColor: colors.grey[300]
-  },
-  content: {
+  container: {
     marginTop: theme.spacing(3)
   }
 }));
 
 const Profile = props => {
-  const { match, history } = props;
+  const { user } = props;
   const classes = useStyles();
-  const { id, tab } = match.params;
 
-  const handleTabsChange = (event, value) => {
-    history.push(value);
-  };
-
-  const tabs = [
-    { value: 'timeline', label: 'Timeline' },
-    { value: 'connections', label: 'Connections' },
-    { value: 'projects', label: 'Projects' },
-    { value: 'reviews', label: 'Reviews' }
-  ];
-
-  if (!tab) {
-    return <Redirect to={`/profile/${id}/timeline`} />;
+  if (!user) {
+    return null;
   }
 
-  if (!tabs.find(t => t.value === tab)) {
-    return <Redirect to="/errors/error-404" />;
-  }
 
   return (
     <Page
@@ -53,36 +31,31 @@ const Profile = props => {
       title="Profile"
     >
       <Header />
-      <div className={classes.inner}>
-        <Tabs
-          onChange={handleTabsChange}
-          scrollButtons="auto"
-          value={tab}
-          variant="scrollable"
+      <Grid
+        className={classes.container}
+        container
+        spacing={3}
+      >
+        <Grid
+          item
+          lg={12}
+          sm={12}
+          xs={12}
         >
-          {tabs.map(tab => (
-            <Tab
-              key={tab.value}
-              label={tab.label}
-              value={tab.value}
-            />
-          ))}
-        </Tabs>
-        <Divider className={classes.divider} />
-        <div className={classes.content}>
-          {tab === 'timeline' && <Timeline />}
-          {tab === 'connections' && <Connections />}
-          {tab === 'projects' && <Projects />}
-          {tab === 'reviews' && <Reviews />}
-        </div>
-      </div>
+	       <ProfileDetails profile={user} />
+        </Grid>
+      </Grid>
+
     </Page>
   );
 };
 
 Profile.propTypes = {
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
-export default Profile;
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps, null)(Profile);

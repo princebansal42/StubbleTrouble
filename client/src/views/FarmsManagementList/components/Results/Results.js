@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import {
-  Avatar,
   Card,
   CardActions,
   CardContent,
@@ -23,8 +22,7 @@ import {
   Typography
 } from '@material-ui/core';
 
-import getInitials from 'utils/getInitials';
-import { ReviewStars, GenericMoreButton, TableEditBar } from 'components';
+import { GenericMoreButton, TableEditBar } from 'components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,11 +48,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Results = props => {
-  const { className, farms, ...rest } = props;
+  const { className, farms, deleteFarm, ...rest } = props;
 
   const classes = useStyles();
 
-  const [selectedFarms, setSelectedCustomers] = useState([]);
+  const [selectedFarms, setSelectedFarms] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -63,31 +61,31 @@ const Results = props => {
       ? farms.map(farm => farm.id)
       : [];
 
-    setSelectedCustomers(selectedFarms);
+    setSelectedFarms(selectedFarms);
   };
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedFarms.indexOf(id);
-    let newSelectedCustomers = [];
+    let newSelectedFarms = [];
 
     if (selectedIndex === -1) {
-      newSelectedCustomers = newSelectedCustomers.concat(selectedFarms, id);
+      newSelectedFarms = newSelectedFarms.concat(selectedFarms, id);
     } else if (selectedIndex === 0) {
-      newSelectedCustomers = newSelectedCustomers.concat(
+      newSelectedFarms = newSelectedFarms.concat(
         selectedFarms.slice(1)
       );
     } else if (selectedIndex === selectedFarms.length - 1) {
-      newSelectedCustomers = newSelectedCustomers.concat(
+      newSelectedFarms = newSelectedFarms.concat(
         selectedFarms.slice(0, -1)
       );
     } else if (selectedIndex > 0) {
-      newSelectedCustomers = newSelectedCustomers.concat(
+      newSelectedFarms = newSelectedFarms.concat(
         selectedFarms.slice(0, selectedIndex),
         selectedFarms.slice(selectedIndex + 1)
       );
     }
 
-    setSelectedCustomers(newSelectedCustomers);
+    setSelectedFarms(newSelectedFarms);
   };
 
   const handleChangePage = (event, page) => {
@@ -98,8 +96,14 @@ const Results = props => {
     setRowsPerPage(event.target.value);
   };
 
-  const handleRowDelete = () => {
+  const handleRowDelete = async () => {
+    selectedFarms.forEach((item, i) => {
+      deleteFarm(item);
+    });
+  };
 
+  const handleCancel = () => {
+    setSelectedFarms([]);
   };
 
   return (
@@ -128,15 +132,7 @@ const Results = props => {
                 <TableHead>
                   <TableRow>
                     <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedFarms.length === farms.length}
-                        color="primary"
-                        indeterminate={
-                          selectedFarms.length > 0 &&
-                          selectedFarms.length < farms.length
-                        }
-                        onChange={handleSelectAll}
-                      />
+
                     </TableCell>
                     <TableCell>Farm Id</TableCell>
                     <TableCell>Name</TableCell>
@@ -151,54 +147,48 @@ const Results = props => {
                   {farms.slice(0, rowsPerPage).map(farm => (
                     <TableRow
                       hover
-                      key={farm.id}
-                      selected={selectedFarms.indexOf(farm.id) !== -1}
+                      key={farm._id}
+                      selected={selectedFarms.indexOf(farm._id) !== -1}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={
-                            selectedFarms.indexOf(farm.id) !== -1
+                            selectedFarms.indexOf(farm._id) !== -1
                           }
                           color="primary"
                           onChange={event =>
-                            handleSelectOne(event, farm.id)
+                            handleSelectOne(event, farm._id)
                           }
-                          value={selectedFarms.indexOf(farm.id) !== -1}
+                          value={selectedFarms.indexOf(farm._id) !== -1}
                         />
                       </TableCell>
-                      <TableCell>{farm.id}</TableCell>
+                      <TableCell>{farm._id}</TableCell>
                       <TableCell>
                         <div className={classes.nameCell}>
-                          <Avatar
-                            className={classes.avatar}
-                            src={farm.avatar}
-                          >
-                            {getInitials(farm.name)}
-                          </Avatar>
                           <div>
                             <Link
                               color="inherit"
                               component={RouterLink}
-                              to="/management/farms/1"
+                              to={`/dashboard/management/farms/${farm._id}`}
                               variant="h6"
                             >
-                              {farm.name}
+                              {farm._id}
                             </Link>
                             <div>{farm.email}</div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>{farm.location}</TableCell>
+                      <TableCell>{farm.address}</TableCell>
 
-                      <TableCell>{farm.lat}</TableCell>
-                      <TableCell>{farm.lng}</TableCell>
-                      <TableCell>{farm.rating}</TableCell>
+                      <TableCell>{farm.location.lat}</TableCell>
+                      <TableCell>{farm.location.long}</TableCell>
+                      <TableCell>{farm.area}</TableCell>
                       <TableCell align="right">
                         <Button
                           color="primary"
                           component={RouterLink}
                           size="small"
-                          to="/dashboard/management/farms/1"
+                          to={`/dashboard/management/farms/${farm._id}`}
                           variant="outlined"
                         >
                           Edit
@@ -223,14 +213,15 @@ const Results = props => {
           />
         </CardActions>
       </Card>
-      <TableEditBar selected={selectedFarms} onDelete={handleRowDelete}/>
+      <TableEditBar selected={selectedFarms} onCancel={handleCancel} onDelete={handleRowDelete}/>
     </div>
   );
 };
 
 Results.propTypes = {
   className: PropTypes.string,
-  farms: PropTypes.array.isRequired
+  farms: PropTypes.array.isRequired,
+  deleteFarm: PropTypes.func.isRequired
 };
 
 Results.defaultProps = {

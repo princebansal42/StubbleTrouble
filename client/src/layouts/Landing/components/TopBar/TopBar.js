@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react';
-import { connect } from "react-redux";
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   AppBar,
@@ -23,9 +21,10 @@ import {
   ListItemText,
   ClickAwayListener
 } from '@material-ui/core';
-import LockIcon from '@material-ui/icons/LockOutlined';
+import LockIcon from '@material-ui/icons/LockOpen';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 import useRouter from 'utils/useRouter';
 import { logout } from 'actions';
@@ -66,39 +65,74 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TopBar = props => {
-  const { className, auth: { isAuthenticated }, ...rest } = props;
+  const { className, auth: { isAuthenticated }, logout, ...rest } = props;
 
   const classes = useStyles();
   const { history } = useRouter();
   const searchRef = useRef(null);
-  const dispatch = useDispatch();
 
 
   const handleLogout = () => {
-    history.push('/auth/login');
-  // dispatch(logout());
+    logout();
+    history.push("/");
   };
+
+  const goToDashboard = () => {
+    history.push('/dashboard');
+  };
+
+  const goToLogIn = () => {
+    history.push('/auth/login');
+  }
+
+  const goToRegister = () => {
+    history.push('/auth/register');
+  }
+
+
+
 
   let button;
   if(isAuthenticated) {
-	button = <Button
+	button =  <>
+            <Button
+              color="inherit"
+              className= {classes.logoutButton}
+              onClick={goToDashboard}
+            >
+            <DashboardIcon className={classes.logoutIcon} />
+              My Dashboard
+            </Button>
+            <Button
 		        className={classes.logoutButton}
 		        color="inherit"
 		        onClick={handleLogout}
 		        >
             <InputIcon className={classes.logoutIcon} />
             	Sign out
-        	   </Button>;
+        	  </Button>
+            </>
+
   }
   else{
-	button = <Button
+	button = <>
+            <Button
 		        className={classes.logoutButton}
 		        color="inherit"
-		        onClick={handleLogout}
+		        onClick={goToLogIn}
 		        >
             <InputIcon className={classes.logoutIcon} />
             	Sign In
-        	  </Button>;;
+        	  </Button>
+            <Button
+             className={classes.logoutButton}
+             color="inherit"
+             onClick={goToRegister}
+            >
+            <LockIcon className={classes.logoutIcon} />
+             Sign Up
+            </Button>
+            </>
   }
 
   return (
@@ -125,11 +159,8 @@ const TopBar = props => {
 
 TopBar.propTypes = {
   className: PropTypes.string,
-  auth: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    auth: state.auth
-});
 
-export default connect(mapStateToProps, null)(TopBar);
+export default TopBar;

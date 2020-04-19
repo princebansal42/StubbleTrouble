@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +25,7 @@ const useStyles = makeStyles(theme => ({
   mediaContainer: {
     margin: '0 auto',
     maxWidth: 1600,
+    maxHeight: 300,
     padding: theme.spacing(0, 2),
     overflow: 'hidden'
   },
@@ -54,6 +54,13 @@ const Header = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
+    <div className={classes.mediaContainer}>
+      <img
+        alt="Demos"
+        className={classes.media}
+        src="https://www.teriin.org/sites/default/files/inline-images/paddy-residue.jpg"
+      />
+    </div>
       <div className={classes.header}>
         <Typography
           align="center"
@@ -62,6 +69,7 @@ const Header = props => {
         >
           Stubble Trouble
         </Typography>
+
         <Typography
           align="center"
           component="h2"
@@ -73,25 +81,9 @@ const Header = props => {
           customizable, responsive and easy to integrate.
         </Typography>
         <div className={classes.buttons}>
-          <Link to="/dashboard">
-          <Button
-            color="primary"
-            component="a"
-            target="_blank"
-            variant="contained"
-          >
-            My Dashboard
-          </Button>
-          </Link>
         </div>
       </div>
-      <div className={classes.mediaContainer}>
-        <img
-          alt="Demos"
-          className={classes.media}
-          src="https://www.teriin.org/sites/default/files/inline-images/paddy-residue.jpg"
-        />
-      </div>
+
       <div className={classes.stats}>
         <Grid
           alignItems="center"

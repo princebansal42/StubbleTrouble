@@ -4,7 +4,6 @@ import { Link } from'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardActionArea, CardMedia, Typography, Avatar } from '@material-ui/core';
-import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -74,7 +73,7 @@ MyFarms.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   href: PropTypes.string,
-  Icon: PropTypes.string
+  Icon: PropTypes.object
 };
 
 export default MyFarms;

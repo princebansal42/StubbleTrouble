@@ -1,10 +1,12 @@
 import React, { Fragment, Suspense } from 'react';
+import { connect } from "react-redux";
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 
 import { TopBar } from './components';
+import { logout } from "actions";
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -17,13 +19,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Landing = props => {
-  const { route } = props;
+  const { route, logout, auth } = props;
 
   const classes = useStyles();
 
   return (
     <Fragment>
-      <TopBar />
+      <TopBar auth={auth} logout={logout}/>
       <main className={classes.content}>
         <Suspense fallback={<LinearProgress />}>
           {renderRoutes(route.routes)}
@@ -34,7 +36,13 @@ const Landing = props => {
 };
 
 Landing.propTypes = {
-  route: PropTypes.object
+  route: PropTypes.object,
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default Landing;
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, { logout })(Landing);

@@ -1,10 +1,3 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable react/display-name */
-import React from 'react';
-import {
-  colors
-} from '@material-ui/core';
-
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
@@ -57,6 +50,50 @@ const contents = {
       href: '/dashboard/settings/general'
     },
   ],
+  admin: [
+    {
+      title: 'Buy Stubble',
+      icon: ShopIcon,
+      href: '/dashboard'
+    },
+    {
+      title: 'Get Stubble Uses',
+      icon: HelpIcon,
+      href: '/dashboard'
+    },
+    {
+      title: 'Orders',
+      icon: HistoryIcon,
+      href: '/dashboard/management/orders'
+    },
+    {
+      title: 'Profile',
+      icon: PersonIcon,
+      href: '/dashboard/settings/general'
+    },
+  ],
+  logistics: [
+    {
+      title: 'Buy Stubble',
+      icon: ShopIcon,
+      href: '/dashboard'
+    },
+    {
+      title: 'Get Stubble Uses',
+      icon: HelpIcon,
+      href: '/dashboard'
+    },
+    {
+      title: 'Orders',
+      icon: HistoryIcon,
+      href: '/dashboard/management/orders'
+    },
+    {
+      title: 'Profile',
+      icon: PersonIcon,
+      href: '/dashboard/settings/general'
+    },
+  ]
 
 };
 

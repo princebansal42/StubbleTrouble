@@ -74,8 +74,8 @@ export const addFarm = (farmDetail) => async (dispatch) => {
             "Content-Type": "application/json",
         },
     };
-
-    const body = JSON.stringify({ area, location: { lat, long }, address });
+    const body = JSON.stringify({ area, lat, long , address });
+	console.log(lat);
     try {
         const res = await axios.post("/api/farms", body, config);
         dispatch({
@@ -97,7 +97,7 @@ export const editFarm = (id, newfarmDetail) => async (dispatch) => {
         area,
         location: { lat, long },
         address,
-    } = farmDetail;
+    } = newfarmDetail;
     dispatch({
         type: FARM_EDIT_REQUEST,
     });
@@ -107,7 +107,7 @@ export const editFarm = (id, newfarmDetail) => async (dispatch) => {
         },
     };
 
-    const body = JSON.stringify({ area, location: { lat, long }, address });
+    const body = JSON.stringify({ area, lat, long, address });
     try {
         const res = await axios.put(`/api/farms/${id}`, body, config);
         dispatch({
@@ -128,7 +128,7 @@ export const deleteFarm = (id) => async (dispatch) => {
     dispatch({
         type: FARM_DELETE_REQUEST,
     });
-
+	console.log(id);
     try {
         const res = await axios.delete(`/api/farms/${id}`);
         dispatch({

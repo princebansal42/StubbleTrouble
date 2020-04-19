@@ -10,7 +10,7 @@ import { Redirect } from "react-router-dom";
 
 // Redux
 import { connect } from "react-redux";
-import auth from "reducers/auth";
+
 const useStyles = makeStyles((theme) => ({
     content: {
         height: "100%",

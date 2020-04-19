@@ -28,6 +28,7 @@ export const loadUser = () => async (dispatch) => {
             dispatch({
                 type: AUTH_ERROR,
             });
+	    console.log(err.response.data.errors);
         }
     } else dispatch({ type: AUTH_ERROR });
 };

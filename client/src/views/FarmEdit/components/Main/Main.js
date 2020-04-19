@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, Typography, Avatar, Grid } from '@material-ui/core';
+import { Card, Typography } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
+import SuccessSnackbar from '../SuccessSnackbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,17 +41,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FarmEdit = props => {
-  const { className, id, ...rest } = props;
+  const { className, id, editFarm, farm } = props;
 
   const classes = useStyles();
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [formState, setFormState] = useState({
-    nickname:"China Farm",
-    address:"NSUT,Delhi",
-    lat:28.6103,
-    lng:77.0379
+    address:farm.address,
+    area:farm.area,
+    lat:farm.location.lat,
+    long:farm.location.long
   });
 
+  useEffect(() => {
+
+  /*  setFormState(formState => ({
+      address: farm.address,
+      area: farm.area,
+      lat: farm.location.lng,
+      long: farm.location.long
+    }))
+
+*/
+
+}, [farm]);
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
   const handleChange = event => {
     event.persist();
 
@@ -64,21 +81,34 @@ const FarmEdit = props => {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    const farmDetail = {
+      address: formState.address,
+      location: {
+        lat: formState.lat,
+        long: formState.long
+      },
+      area: formState.area
+    };
+    editFarm(id, farmDetail);
+    setOpenSnackbar(true);
 
   };
 
   const onMarkerDragEnd = (t, map, coord) => {
     const { latLng } = coord;
     const lat = latLng.lat();
-    const lng = latLng.lng();
+    const long = latLng.lng();
 
     setFormState(formState => ({
       ...formState,
       lat: lat,
-      lng: lng
+      long: long
     }));
   }
 
+  if(!farm){
+    return null;
+  }
 
   return (
     <>
@@ -100,20 +130,20 @@ const FarmEdit = props => {
               <div className={classes.fields}>
                 <TextField
                   fullWidth
-                  label="Farm Nickname"
-                  name="nickname"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.nickname}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
                   label="Farm Address"
                   name="address"
                   onChange={handleChange}
                   type="text"
                   value={formState.address}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Farm Area"
+                  name="area"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.area}
                   variant="outlined"
                 />
                 <TextField
@@ -128,10 +158,10 @@ const FarmEdit = props => {
                 <TextField
                   fullWidth
                   label="Farm longitude"
-                  name="lng"
+                  name="long"
                   onChange={handleChange}
                   type="text"
-                  value={formState.lng}
+                  value={formState.long}
                   variant="outlined"
                 />
               </div>
@@ -146,13 +176,13 @@ const FarmEdit = props => {
                   } }
                   google = { props.google }
                   zoom = { 14 }
-                  initialCenter = {{ lat: formState.lat, lng: formState.lng }}
+                  initialCenter = {{ lat: formState.lat, lng: formState.long }}
                 >
                   <Marker
                     draggable={true}
                     onDragend={onMarkerDragEnd}
                     title = { 'Changing Colors Garage' }
-                    position = {{ lat: formState.lat, lng: formState.lng }}
+                    position = {{ lat: formState.lat, lng: formState.long }}
                     name = { 'Changing Colors Garage' }
                   />
                 </Map>
@@ -168,6 +198,10 @@ const FarmEdit = props => {
               </Button>
 
             </form>
+            <SuccessSnackbar
+              onClose={handleSnackbarClose}
+              open={openSnackbar}
+            />
 
         </div>
       </div>
@@ -178,8 +212,11 @@ const FarmEdit = props => {
 
 FarmEdit.propTypes = {
   className: PropTypes.string,
-  id: PropTypes.string
+  id: PropTypes.string,
+  editFarm: PropTypes.func.isRequired,
+  farm: PropTypes.object.isRequired,
 };
+
 
 export default GoogleApiWrapper({
   api: ('AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo')

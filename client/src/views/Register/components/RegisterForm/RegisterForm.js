@@ -15,8 +15,6 @@ import {
   InputLabel
 } from '@material-ui/core';
 
-import useRouter from 'utils/useRouter';
-
 const schema = {
   name: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -42,9 +40,6 @@ const schema = {
     length: {
       maximum: 128
     }
-  },
-  policy: {
-    presence: { allowEmpty: false, message: 'is required' }
   },
   policy: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -80,7 +75,6 @@ const RegisterForm = props => {
   const { className, register, ...rest } = props;
 
   const classes = useStyles();
-  const { history } = useRouter();
 
   const [formState, setFormState] = useState({
     isValid: false,

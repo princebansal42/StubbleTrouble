@@ -140,8 +140,6 @@ const TopBar = (props) => {
         setOpenNotifications(false);
     };
 
-    // let button;
-    // if (isAuthenticated) {
     let button = (
         <Button
             className={classes.logoutButton}
@@ -152,9 +150,6 @@ const TopBar = (props) => {
             Sign out
         </Button>
     );
-    // } else {
-    //     button = "";
-    // }
 
     return (
         <AppBar

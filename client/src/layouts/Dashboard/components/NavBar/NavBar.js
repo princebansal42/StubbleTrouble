@@ -2,9 +2,8 @@ import React, { Fragment, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
-import { Drawer, Divider, Paper, Avatar, Typography } from "@material-ui/core";
+import { Drawer, Paper, Typography } from "@material-ui/core";
 import { Hidden } from "@material-ui/core";
 
 import useRouter from "utils/useRouter";
@@ -51,7 +50,7 @@ const NavBar = (props) => {
     let userType;
     const classes = useStyles();
     const router = useRouter();
-    const session = useSelector((state) => state.session);
+//    const session = useSelector((state) => state.session);
 
     if (user) {
         userType = user.userType;
@@ -69,21 +68,6 @@ const NavBar = (props) => {
 
     const navbarContent = (
         <div className={classes.content}>
-            <div className={classes.profile}>
-                <Avatar
-                    alt='Person'
-                    className={classes.avatar}
-                    component={RouterLink}
-                    src={session.user.avatar}
-                    to='/profile/1/timeline'
-                />
-                <Typography className={classes.name} variant='h4'>
-                    {session.user.first_name} {session.user.last_name}
-                </Typography>
-                <Typography variant='body2'>{session.user.bio}</Typography>
-            </div>
-
-            <Divider className={classes.divider} />
             <nav className={classes.navigation}>
                 {navigationConfig[userType].map((list) => (
                     <Navigation

@@ -80,7 +80,7 @@ router.post(
 // @desc Get a Farm
 // @access Private
 
-router.get("/", auth, async (req, res) => {
+router.get("/:farm_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     if (["admin", "farmer"].indexOf(userType) === -1)
         return res
@@ -88,7 +88,7 @@ router.get("/", auth, async (req, res) => {
             .json({ errors: [{ msg: "Not Authorised to Access this area." }] });
 
     try {
-        const farm = await Farm.findById(req.params.id);
+        const farm = await Farm.findById(req.params.farm_id);
         return res.json(farm);
     } catch (err) {
         console.error(err.message);

@@ -27,10 +27,6 @@ const Header = props => {
 
   const classes = useStyles();
 
-  const data = {
-    name: 'Shen Zhi'
-  };
-
   return (
     <div
       {...rest}
@@ -48,7 +44,7 @@ const Header = props => {
         gutterBottom
         variant="h3"
       >
-        Good Morning, {data.name}
+        Hello There!
       </Typography>
       <Typography variant="subtitle1">Here's what's happening</Typography>
     </div>

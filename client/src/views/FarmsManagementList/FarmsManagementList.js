@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
-import axios from 'utils/axios';
-import { Page, SearchBar } from 'components';
+import { Page } from 'components';
 import { Header, Results } from './components';
+import { getFarmList, deleteFarm } from "actions/farms";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,31 +16,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CustomerManagementList = () => {
+const FarmsManagementList = (props) => {
   const classes = useStyles();
-
-  const [farms, setCustomers] = useState([]);
+  const { getFarmList, farms } = props;
 
   useEffect(() => {
     let mounted = true;
 
-    const fetchCustomers = () => {
-      axios.get('/api/management/farms').then(response => {
-        if (mounted) {
-          setCustomers(response.data.farms);
-        }
-      });
-    };
-
-    fetchCustomers();
+    getFarmList();
 
     return () => {
       mounted = false;
     };
   }, []);
-
-  const handleFilter = () => {};
-  const handleSearch = () => {};
 
   return (
     <Page
@@ -46,18 +36,26 @@ const CustomerManagementList = () => {
       title="Customer Management List"
     >
       <Header />
-      <SearchBar
-        onFilter={handleFilter}
-        onSearch={handleSearch}
-      />
+
       {farms && (
         <Results
           className={classes.results}
           farms={farms}
+          deleteFarm={deleteFarm}
         />
       )}
     </Page>
   );
 };
 
-export default CustomerManagementList;
+FarmsManagementList.propTypes = {
+    farms: PropTypes.array.isRequired,
+    getFarmList: PropTypes.func.isRequired,
+    deleteFarm: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  farms: state.farm.farms
+});
+
+export default connect(mapStateToProps, { getFarmList, deleteFarm })(FarmsManagementList);

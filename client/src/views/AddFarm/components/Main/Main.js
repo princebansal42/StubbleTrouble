@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, Typography, Avatar, Grid } from '@material-ui/core';
+import { Card, Typography } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
+import useRouter from 'utils/useRouter';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,15 +41,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { className, ...rest } = props;
+  const { className, addFarm } = props;
 
   const classes = useStyles();
+  const { history } = useRouter();
 
   const [formState, setFormState] = useState({
-    nickname:"",
     address:"",
+    area:"",
     lat:28.6103,
-    lng:77.0379
+    long:77.0379
   });
 
   const handleChange = event => {
@@ -64,18 +65,28 @@ const Main = props => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-
+    const farmDetail = {
+      address: formState.address,
+      location: {
+        lat: formState.lat,
+        long: formState.long
+      },
+      area: formState.area
+    };
+    console.log(farmDetail);
+    addFarm(farmDetail);
+    history.push('/dashboard/management/farms');
   };
 
   const onMarkerDragEnd = (t, map, coord) => {
     const { latLng } = coord;
     const lat = latLng.lat();
-    const lng = latLng.lng();
+    const long = latLng.lng();
 
     setFormState(formState => ({
       ...formState,
       lat: lat,
-      lng: lng
+      long: long
     }));
   }
 
@@ -100,20 +111,20 @@ const Main = props => {
               <div className={classes.fields}>
                 <TextField
                   fullWidth
-                  label="Farm Nickname"
-                  name="nickname"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.nickname}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
                   label="Farm Address"
                   name="address"
                   onChange={handleChange}
                   type="text"
                   value={formState.address}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Farm Area"
+                  name="area"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.area}
                   variant="outlined"
                 />
                 <TextField
@@ -128,10 +139,10 @@ const Main = props => {
                 <TextField
                   fullWidth
                   label="Farm longitude"
-                  name="lng"
+                  name="long"
                   onChange={handleChange}
                   type="text"
-                  value={formState.lng}
+                  value={formState.long}
                   variant="outlined"
                 />
               </div>
@@ -146,13 +157,13 @@ const Main = props => {
                   } }
                   google = { props.google }
                   zoom = { 14 }
-                  initialCenter = {{ lat: formState.lat, lng: formState.lng }}
+                  initialCenter = {{ lat: formState.lat, lng: formState.long }}
                 >
                   <Marker
                     draggable={true}
                     onDragend={onMarkerDragEnd}
                     title = { 'Changing Colors Garage' }
-                    position = {{ lat: formState.lat, lng: formState.lng }}
+                    position = {{ lat: formState.lat, lng: formState.long }}
                     name = { 'Changing Colors Garage' }
                   />
                 </Map>
@@ -177,7 +188,8 @@ const Main = props => {
 };
 
 Main.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  addFarm: PropTypes.func.isRequired
 };
 
 export default GoogleApiWrapper({

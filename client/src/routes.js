@@ -12,7 +12,6 @@ import DashboardDefaultView from "./views/DashboardDefault";
 import OverviewView from "./views/Overview";
 import PresentationView from "./views/Presentation";
 // import PrivateRoute from "./components/PrivateRoute";
-console.log(usePrivateRoute);
 
 const routes = [
     {
@@ -140,6 +139,11 @@ const routes = [
                 path: "/dashboard/overview",
                 exact: true,
                 component: OverviewView,
+            },
+	    {
+                path: "/dashboard/profile",
+                exact: true,
+                component: lazy(() => import("views/Profile")),
             },
             {
                 path: "/dashboard/settings",

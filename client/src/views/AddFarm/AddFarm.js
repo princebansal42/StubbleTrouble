@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import { Page } from 'components';
@@ -6,6 +7,8 @@ import {
   Header,
   Main,
 } from './components';
+import PropTypes from 'prop-types';
+import { addFarm } from "actions/farms";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,8 +19,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddFarm = () => {
+const AddFarm = (props) => {
   const classes = useStyles();
+
+  const { addFarm } = props;
 
   return (
     <Page
@@ -36,11 +41,15 @@ const AddFarm = () => {
           sm={12}
           xs={12}
         >
-	  <Main />
+	  <Main addFarm = {addFarm}/>
         </Grid>
       </Grid>
     </Page>
   );
 };
 
-export default AddFarm;
+AddFarm.propTypes = {
+    addFarm: PropTypes.func.isRequired,
+};
+
+export default connect(null, { addFarm })(AddFarm);

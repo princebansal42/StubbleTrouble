@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Drawer, Grid, Typography, Button, Hidden } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
 
@@ -28,9 +27,8 @@ const TableEditBar = props => {
   const {
     selected,
     className,
-    onMarkPaid,
-    onMarkUnpaid,
     onDelete,
+    onCancel,
     ...rest
   } = props;
 
@@ -73,13 +71,9 @@ const TableEditBar = props => {
             xs={12}
           >
             <div className={classes.actions}>
-              <Button onClick={onMarkPaid}>
-                <CheckIcon className={classes.buttonIcon} />
-                Mark Paid
-              </Button>
-              <Button onClick={onMarkUnpaid}>
+              <Button onClick={onCancel}>
                 <CloseIcon className={classes.buttonIcon} />
-                Mark Unpaid
+                Cancel
               </Button>
               <Button onClick={onDelete}>
                 <DeleteIcon className={classes.buttonIcon} />
@@ -96,8 +90,7 @@ const TableEditBar = props => {
 TableEditBar.propTypes = {
   className: PropTypes.string,
   onDelete: PropTypes.func,
-  onMarkPaid: PropTypes.func,
-  onMarkUnpaid: PropTypes.func,
+  onCancel: PropTypes.func,
   selected: PropTypes.array.isRequired
 };
 

@@ -6,13 +6,9 @@ import { connect } from "react-redux";
 import { Page } from "components";
 import {
     Header,
-    LatestOrders,
-    RealTime,
-    TeamTasks,
-    TodaysMoney,
-    PerformanceOverTime,
     Tile,
 } from "./components";
+import PropTypes from 'prop-types';
 
 import contents from "./componentsConfig";
 
@@ -27,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardDefault = (props) => {
     const {
-        auth: { user },
-        ...rest
+        auth: { user }
     } = props;
     let userType;
     if (user) {
@@ -38,13 +33,12 @@ const DashboardDefault = (props) => {
     }
 
     const classes = useStyles();
-    console.log(contents);
 
     return (
         <Page className={classes.root} title='Default Dashboard'>
             <Header />
             <Grid className={classes.container} container spacing={3}>
-                {contents["farmer"].map((tile, i) => (
+                {contents[userType].map((tile, i) => (
                     <Grid key={i} item lg={6} sm={6} xs={12}>
                         <Tile
                             title={tile.title}
@@ -53,18 +47,13 @@ const DashboardDefault = (props) => {
                         />
                     </Grid>
                 ))}
-                <Grid item lg={3} xs={12}>
-                    <RealTime />
-                </Grid>
-                <Grid item lg={9} xs={12}>
-                    <PerformanceOverTime />
-                </Grid>
-                <Grid item lg={12} xl={12} xs={12}>
-                    <LatestOrders />
-                </Grid>
             </Grid>
         </Page>
     );
+};
+
+DashboardDefault.propTypes = {
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

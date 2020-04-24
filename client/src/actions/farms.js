@@ -17,7 +17,7 @@ import {
     FARM_DELETE_FAILURE,
 } from "./types";
 
-import setAuthToken from "../utils/setAuthToken";
+// import setAuthToken from "../utils/setAuthToken";
 
 // Get Farms
 export const getFarmList = () => async (dispatch) => {
@@ -74,8 +74,8 @@ export const addFarm = (farmDetail) => async (dispatch) => {
             "Content-Type": "application/json",
         },
     };
-    const body = JSON.stringify({ area, lat, long , address });
-	console.log(lat);
+    const body = JSON.stringify({ area, lat, long, address });
+    console.log(lat);
     try {
         const res = await axios.post("/api/farms", body, config);
         dispatch({
@@ -128,9 +128,10 @@ export const deleteFarm = (id) => async (dispatch) => {
     dispatch({
         type: FARM_DELETE_REQUEST,
     });
-	console.log(id);
+
     try {
-        const res = await axios.delete(`/api/farms/${id}`);
+        // const res =
+        await axios.delete(`/api/farms/${id}`);
         dispatch({
             type: FARM_DELETE_SUCCESS,
             payload: id,

@@ -69,7 +69,7 @@ export default function (state = initialState, action) {
         case FARM_DELETE_SUCCESS:
             return {
                 ...state,
-                farms: state.farms.filter((farm) => farm._id !== payload.id),
+                farms: state.farms.filter((farm) => farm._id !== payload),
                 farm: null,
                 loading: false,
             };

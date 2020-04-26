@@ -36,6 +36,10 @@ const contents = {
                             title: "Farms",
                             href: "/dashboard/management/farms",
                         },
+			{
+                            title: "Auctions",
+                            href: "/dashboard/management/auctions",
+                        },
                         {
                             title: "Customer Details",
                             href: "/dashboard/management/customers/1/summary",
@@ -121,6 +125,10 @@ const contents = {
                     href: "/dashboard/management",
                     icon: BarChartIcon,
                     children: [
+			{
+                            title: "Auctions",
+                            href: "/dashboard/management/auctions",
+                        },
                         {
                             title: "Orders",
                             href: "/dashboard/management/orders",

@@ -106,6 +106,16 @@ const routes = [
                 exact: true,
                 component: lazy(() => import("views/FarmEdit")),
             },
+	    {
+                path: "/dashboard/management/auctions",
+                exact: true,
+                component: lazy(() => import("views/AuctionList")),
+            },
+	    {
+                path: "/dashboard/management/auctions/:id",
+                exact: true,
+                component: lazy(() => import("views/AuctionDetails")),
+            },
             {
                 path: "/dashboard/management/customers/:id",
                 exact: true,
@@ -124,6 +134,11 @@ const routes = [
                 path: "/dashboard/management/add-farm",
                 exact: true,
                 component: lazy(() => import("views/AddFarm")),
+            },
+	    {
+                path: "/dashboard/management/add-auction",
+                exact: true,
+                component: lazy(() => import("views/AddAuction")),
             },
             {
                 path: "/dashboard/management/orders",

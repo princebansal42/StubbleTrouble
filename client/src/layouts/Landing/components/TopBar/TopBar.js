@@ -159,6 +159,7 @@ const TopBar = props => {
 
 TopBar.propTypes = {
   className: PropTypes.string,
+  auth: PropTypes.object,
   logout: PropTypes.func.isRequired,
 };
 

@@ -26,7 +26,9 @@
         "express": "^4.17.1",
         "express-validator": "^6.4.0",
         "jsonwebtoken": "^8.5.1",
-        "mongoose": "^5.9.4"
+        "mongoose": "^5.9.4",
+        "pusher": "^3.0.1",
+        "pusher-js": "^6.0.0"
     },
     "devDependencies": {
         "concurrently": "^5.1.0",

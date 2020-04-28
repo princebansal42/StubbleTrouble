@@ -39,15 +39,15 @@ router.get("/", auth, async (req, res) => {
 // @access Private
 
 // TODO -> Add custom Validatior
-router.post("/", [auth], async (req, res) => {
+router.post("/", auth, async (req, res) => {
     // TODO -> Place Authorization validation in a middleware
 
     // Check if the user placing order is a buyer
     const { id, userType } = req.user;
-    if (userType !== "buyer")
-        return res.status(401).json({
-            errors: [{ msg: "Not Authorised to Access this area." }]
-        });
+    // if (userType !== "buyer")
+    //     return res.status(401).json({
+    //         errors: [{ msg: "Not Authorised to Access this area." }]
+    //     });
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -59,7 +59,7 @@ router.post("/", [auth], async (req, res) => {
         let order = new Order({
             shipping,
             products,
-            payment
+            payment,
         });
         order = await order.save();
         return res.json(order);
@@ -77,7 +77,7 @@ router.delete("/:order_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     if (userType !== "buyer")
         return res.status(401).json({
-            errors: [{ msg: "User not authorized" }]
+            errors: [{ msg: "User not authorized" }],
         });
     try {
         const order = await Order.findById(req.params.order_id);
@@ -113,7 +113,7 @@ router.get("/:order_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     if (["buyer", "farmer"].indexOf(userType) === -1)
         return res.status(401).json({
-            errors: [{ msg: "User not authorized" }]
+            errors: [{ msg: "User not authorized" }],
         });
     try {
         const order = await Order.findById(req.params.order_id);

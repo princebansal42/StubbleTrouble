@@ -2,80 +2,70 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
     {
-        shipping: {
-            customer: {
-                name: {
-                    type: String,
-                    required: true,
-                },
-                customer_id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User",
-                    required: true,
-                },
-            },
-            seller: {
-                name: {
-                    type: String,
-                    require: true,
-                },
-                seller_id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User",
-                    required: true,
-                },
-            },
-            address: {
-                type: "String",
-                required: true,
-            },
-            city: {
-                type: "String",
-                required: true,
-            },
-            state: {
-                type: "String",
-                required: true,
-            },
-            country: {
-                type: "String",
-                required: true,
-            },
-            delivery_notes: {
-                type: "String",
-            },
+        seller: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
         },
-        products: {
-            title: {
-                type: String,
-                required: true,
-            },
-            quantity: {
+        buyer: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        location: {
+            lat: {
                 type: Number,
                 required: true,
             },
-            unit_cost: {
+            long: {
                 type: Number,
                 required: true,
             },
         },
-        payment: {
-            method: {
-                type: String,
-                required: true,
-            },
-            cost: {
-                type: Number,
-                required: true,
-            },
-            paid: {
-                type: Boolean,
-                required: true,
-            },
-            transaction_id: {
-                type: String,
-            },
+        cost: {
+            type: Number,
+            required: true,
         },
+        auction: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        //     products: {
+        //         title: {
+        //             type: String,
+        //             required: true,
+        //         },
+        //         quantity: {
+        //             type: Number,
+        //             required: true,
+        //         },
+        //         unit_cost: {
+        //             type: Number,
+        //             required: true,
+        //         },
+        //     },
+        //     payment: {
+        //         method: {
+        //             type: String,
+        //             required: true,
+        //         },
+        //         cost: {
+        //             type: Number,
+        //             required: true,
+        //         },
+        //         paid: {
+        //             type: Boolean,
+        //             required: true,
+        //         },
+        //         transaction_id: {
+        //             type: String,
+        //         },
+        //     },
     },
     { timestamps: true }
 );

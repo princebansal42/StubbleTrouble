@@ -7,6 +7,9 @@ export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
+// Logout and Clearing Constants
+export const LOGOUT = "LOGOUT";
+
 // User Loading Constants
 export const LOAD_USER = "LOAD_USER";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -58,5 +61,11 @@ export const AUCTION_DELETE_REQUEST = "AUCTION_DELETE_REQUEST";
 export const AUCTION_DELETE_SUCCESS = "AUCTION_DELETE_SUCCESS";
 export const AUCTION_DELETE_FAILURE = "AUCTION_DELETE_FAILURE";
 
-// Logout and Clearing Constants
-export const LOGOUT = "LOGOUT";
+// Order Constants
+export const ORDER_LIST_REQUEST = "ORDER_LIST_REQUEST";
+export const ORDER_LIST_SUCCESS = "ORDER_LIST_SUCCESS";
+export const ORDER_LIST_FAILURE = "ORDER_LIST_FAILURE";
+
+export const ORDER_REQUEST = "ORDER_REQUEST";
+export const ORDER_SUCCESS = "ORDER_SUCCESS";
+export const ORDER_FAILURE = "ORDER_FAILURE";

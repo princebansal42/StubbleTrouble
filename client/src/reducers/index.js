@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
 import alert from "./alert";
 import auth from "./auth";
-import sessionReducer from './sessionReducer';
-import farm from './farm';
-
+import sessionReducer from "./sessionReducer";
+import farm from "./farm";
+import order from "./order";
+import auction from "./auction";
 export default combineReducers({
-    alert: alert,
-    auth: auth,
-    session: sessionReducer,
-    farm: farm
+    alert,
+    auth,
+    farm,
+    order,
+    auction,
 });

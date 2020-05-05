@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Auction = require("../../models/Auction");
+const Farm = require("../../models/Farm");
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const auctionCache = require("../../auctionCache");
@@ -33,16 +34,23 @@ router.post("/", auth, async (req, res) => {
             errors: [{ msg: "Not Authorised to Access this area." }],
         });
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { farm, description, start_time, starting_price } = req.body;
+    const { farm_id, description, start_time, starting_price } = req.body;
     try {
+        const farm = await Farm.findById(farm_id);
+        if (!farm)
+            return res.status(404).json({
+                errors: [{ msg: "Farm not Found." }],
+            });
+
+        if (farm.owner.toString() !== id) {
+            return res.status(401).json({
+                errors: [{ msg: "Not Authorised." }],
+            });
+        }
+
         let auction = new Auction({
             owner: id,
-            farm,
+            farm: farm_id,
             description,
             start_time,
             starting_price,
@@ -112,17 +120,21 @@ router.delete("/:auction_id", auth, async (req, res) => {
 router.post("/join/:auction_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     const { auction_id } = req.params;
-    if (userType !== "buyer" || userType !== "admin")
+    console.log(userType);
+
+    if (userType !== "buyer" && userType !== "admin")
         return res.status(401).json({
             errors: [{ msg: "User not authorized" }],
         });
     let auction;
+    console.log("ID of Auction " + auction_id);
     if (!auctionCache[auction_id]) {
         try {
-            let auction = await Auction.findById(auction_id);
+            auction = await Auction.findById(auction_id);
             if (!auction) {
                 return res.status(404).json({ msg: "Auction not found" });
             }
+
             auctionCache[auction_id] = {
                 registered_users: [],
                 // price:null,
@@ -136,7 +148,6 @@ router.post("/join/:auction_id", auth, async (req, res) => {
             res.status(500).send("Server Error");
         }
     }
-
     auctionCache[auction_id].registered_users.push(id);
     if (!auctionCache[auction_id].last_bid) {
         // auctionCache[auction_id].price = auction.starting_price;
@@ -146,6 +157,7 @@ router.post("/join/:auction_id", auth, async (req, res) => {
             user: id,
         };
     }
+    console.log(auctionCache);
     res.json({ last_bid: auctionCache[auction_id].last_bid });
 });
 module.exports = router;

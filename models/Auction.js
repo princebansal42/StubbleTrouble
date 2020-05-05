@@ -27,6 +27,11 @@ const auctionSchema = new mongoose.Schema(
         final_price: {
             type: Number,
         },
+        completed: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
     },
     { timestamps: true }
 );

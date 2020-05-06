@@ -60,7 +60,7 @@ export const getAuction = (id) => async (dispatch) => {
 };
 
 // Add auction
-export const addFarm = (auctionDetail) => async (dispatch) => {
+export const addAuction = (auctionDetail) => async (dispatch) => {
     const {
         area,
         location: { lat, long },

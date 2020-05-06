@@ -50,19 +50,7 @@ const OrderItems = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {order.items.map(item => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      {item.name} x {item.cuantity}
-                    </TableCell>
-                    <TableCell>{item.billing}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>
-                      {item.currency}
-                      {item.value}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                
               </TableBody>
             </Table>
           </div>

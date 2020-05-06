@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { connect } from "react-redux";
 import { Grid } from '@material-ui/core';
 
 import axios from 'utils/axios';
 import { Page } from 'components';
 import { Header, OrderInfo, OrderItems } from './components';
+import { getOrder } from "actions/order";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,22 +17,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const OrderManagementDetails = () => {
+const OrderManagementDetails = (props) => {
   const classes = useStyles();
-  const [order, setOrder] = useState(null);
+
+  const { order } = props;
+
+  const {
+        match: {
+            params: { id },
+        },
+        getOrder,
+    } = props;
+
 
   useEffect(() => {
     let mounted = true;
 
-    const fetchOrder = () => {
-      axios.get('/api/orders/1').then(response => {
-        if (mounted) {
-          setOrder(response.data.order);
-        }
-      });
-    };
-
-    fetchOrder();
+    getOrder(id);
 
     return () => {
       mounted = false;
@@ -46,7 +49,7 @@ const OrderManagementDetails = () => {
       className={classes.root}
       title="Order Management Details"
     >
-      <Header order={order} />
+      <Header id = {id} />
       <Grid
         className={classes.container}
         container
@@ -73,4 +76,9 @@ const OrderManagementDetails = () => {
   );
 };
 
-export default OrderManagementDetails;
+const mapStateToProps = (state) => ({
+    order: state.order.order,
+});
+
+
+export default connect(mapStateToProps, { getOrder })(OrderManagementDetails);

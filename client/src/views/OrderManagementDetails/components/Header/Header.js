@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Header = props => {
-  const { order, className, ...rest } = props;
+  const { id, className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -52,18 +52,10 @@ const Header = props => {
             component="h1"
             variant="h3"
           >
-            Order #{order.id.split('-').shift()}
+            Order #{id}
           </Typography>
         </Grid>
-        <Grid item>
-          <Button
-            className={classes.deleteButton}
-            variant="contained"
-          >
-            <DeleteIcon className={classes.deleteIcon} />
-            Delete
-          </Button>
-        </Grid>
+
       </Grid>
     </div>
   );
@@ -71,7 +63,7 @@ const Header = props => {
 
 Header.propTypes = {
   className: PropTypes.string,
-  order: PropTypes.object.isRequired
+  id: PropTypes.object.isRequired
 };
 
 export default Header;

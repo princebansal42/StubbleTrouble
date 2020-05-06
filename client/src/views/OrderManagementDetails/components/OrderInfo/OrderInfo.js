@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 const OrderInfo = props => {
   const { order, className, ...rest } = props;
-
+  console.log(order);
   const classes = useStyles();
 
   const options = ['Canceled', 'Completed', 'Rejected'];
@@ -63,69 +63,38 @@ const OrderInfo = props => {
       <CardContent className={classes.content}>
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell>Customer</TableCell>
-              <TableCell>
-                <Link
-                  component={RouterLink}
-                  to="/management/customers/1"
-                >
-                  {order.customer.name}
-                </Link>
-                <div>{order.customer.address}</div>
-                <div>{order.customer.city}</div>
-                <div>{order.customer.country}</div>
-              </TableCell>
-            </TableRow>
-            <TableRow selected>
-              <TableCell>ID</TableCell>
-              <TableCell>#{order.id.split('-').shift()}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Ref</TableCell>
-              <TableCell>{order.ref}</TableCell>
-            </TableRow>
-            <TableRow selected>
-              <TableCell>Date</TableCell>
-              <TableCell>
-                {moment(order.created_at).format('DD/MM/YYYY HH:MM')}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Promotion Code</TableCell>
-              <TableCell>{order.promoCode ? order.promoCode : 'N/A'}</TableCell>
-            </TableRow>
-            <TableRow selected>
-              <TableCell>Amount</TableCell>
-              <TableCell>
-                {order.currency}
-                {order.value}
-              </TableCell>
-            </TableRow>
-            <TableRow>
+
+	         <TableRow selected>
               <TableCell>Status</TableCell>
               <TableCell>
-                <TextField
-                  fullWidth
-                  name="option"
-                  onChange={handleChange}
-                  select
-                  // eslint-disable-next-line react/jsx-sort-props
-                  SelectProps={{ native: true }}
-                  value={option}
-                  variant="outlined"
-                >
-                  {options.map(option => (
-                    <option
-                      key={option}
-                      value={option}
-                    >
-                      {option}
-                    </option>
-                  ))}
-                </TextField>
+                Active
               </TableCell>
             </TableRow>
+            <TableRow >
+              <TableCell>Seller</TableCell>
+              <TableCell>
+                 {order.seller}
+              </TableCell>
+            </TableRow>
+            <TableRow selected>
+              <TableCell>Buyer</TableCell>
+              <TableCell>
+                 {order.buyer}
+              </TableCell>
+            </TableRow>
+            <TableRow >
+              <TableCell>Buyer's Address</TableCell>
+              <TableCell>
+                 {order.address}
+              </TableCell>
+            </TableRow>
+            <TableRow selected>
+              <TableCell>Cost</TableCell>
+              <TableCell>
+                 {order.cost}
+              </TableCell>
+            </TableRow>
+
           </TableBody>
         </Table>
       </CardContent>
@@ -146,6 +115,17 @@ const OrderInfo = props => {
 OrderInfo.propTypes = {
   className: PropTypes.string,
   order: PropTypes.object.isRequired
+};
+
+
+OrderInfo.defaultProps = {
+    orders: {
+      _id:"",
+      seller: "",
+      buyer: "",
+      address: "",
+      cost: ""
+    },
 };
 
 export default OrderInfo;

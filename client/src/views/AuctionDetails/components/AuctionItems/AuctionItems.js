@@ -102,8 +102,8 @@ const AuctionItems = props => {
                      </div>
 
                      <Button
+                     color="secondary"
                        className={classes.submitButton}
-                       color="secondary"
                        size="large"
                        type="submit"
                        variant="contained"

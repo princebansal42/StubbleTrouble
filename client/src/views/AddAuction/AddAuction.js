@@ -8,6 +8,7 @@ import {
   Main,
 } from './components';
 import PropTypes from 'prop-types';
+import { addAuction } from "actions/auction";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,9 +19,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddFarm = (props) => {
+const AddAuction = (props) => {
   const classes = useStyles();
-
+  const { addAuction } = props;
 
   return (
     <Page
@@ -39,15 +40,15 @@ const AddFarm = (props) => {
           sm={12}
           xs={12}
         >
-	  <Main/>
+	  <Main addAuction={addAuction}/>
         </Grid>
       </Grid>
     </Page>
   );
 };
 
-AddFarm.propTypes = {
-
+AddAuction.propTypes = {
+  addAuction: PropTypes.func.isRequired,
 };
 
-export default connect(null, null)(AddFarm);
+export default connect(null, { addAuction })(AddAuction);

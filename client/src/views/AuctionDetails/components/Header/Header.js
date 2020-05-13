@@ -55,7 +55,7 @@ const Header = props => {
             Auction: {id}
           </Typography>
         </Grid>
-        
+
       </Grid>
     </div>
   );
@@ -63,7 +63,7 @@ const Header = props => {
 
 Header.propTypes = {
   className: PropTypes.string,
-  order: PropTypes.object.isRequired
+  id: PropTypes.string.isRequired
 };
 
 export default Header;

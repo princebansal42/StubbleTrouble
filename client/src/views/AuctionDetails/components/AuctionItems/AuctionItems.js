@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AuctionItems = props => {
-  const { className, id, ...rest } = props;
+  const { className, auction, ...rest } = props;
 
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
-    id:id,
+    id:auction._id,
     bid:"",
   });
 
@@ -81,7 +81,7 @@ const AuctionItems = props => {
               <TableBody>
                 <TableRow >
                    <TableCell>
-                     foo bar dsnfvkdnv l  gdsbs
+                     {auction.description}
                    </TableCell>
                 </TableRow>
                 <TableRow >
@@ -125,7 +125,7 @@ const AuctionItems = props => {
 
 AuctionItems.propTypes = {
   className: PropTypes.string,
-  id: PropTypes.string.isRequired,
+  auction: PropTypes.object.isRequired,
 };
 
 export default AuctionItems;

@@ -62,20 +62,22 @@ export const getAuction = (id) => async (dispatch) => {
 // Add auction
 export const addAuction = (auctionDetail) => async (dispatch) => {
     const {
-        area,
-        location: { lat, long },
-        address,
+        farm_id,
+        description,
+        start_time,
+	starting_price
     } = auctionDetail;
     dispatch({
         type: AUCTION_ADD_REQUEST,
     });
+    console.log("ok");
     const config = {
         headers: {
             "Content-Type": "application/json",
         },
     };
-    const body = JSON.stringify({ area, lat, long, address });
-    console.log(lat);
+    const body = JSON.stringify({ farm_id, description, start_time, starting_price });
+   
     try {
         const res = await axios.post("/api/auctions", body, config);
         dispatch({
@@ -94,9 +96,10 @@ export const addAuction = (auctionDetail) => async (dispatch) => {
 // Edit Auction
 export const editAuction = (id, newAuctionDetail) => async (dispatch) => {
     const {
-        area,
-        location: { lat, long },
-        address,
+        farm_id,
+        description,
+        start_time,
+	starting_price
     } = newAuctionDetail;
     dispatch({
         type: AUCTION_EDIT_REQUEST,
@@ -107,7 +110,7 @@ export const editAuction = (id, newAuctionDetail) => async (dispatch) => {
         },
     };
 
-    const body = JSON.stringify({ area, lat, long, address });
+    const body = JSON.stringify({ farm_id, description, start_time, starting_price });
     try {
         const res = await axios.put(`/api/auctions/${id}`, body, config);
         dispatch({

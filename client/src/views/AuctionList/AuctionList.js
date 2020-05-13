@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
-
 import { Page } from "components";
 import { Header, Results } from "./components";
-import { getFarmList, deleteFarm } from "actions/farms";
+import { getAuctionList, deleteAuction } from "actions/auction";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
 
 const AuctionsList = (props) => {
     const classes = useStyles();
-    const { getFarmList, farms, deleteFarm, auth} = props;
+    const { getAuctionList, deleteAuction, auctions, auth} = props;
 
     useEffect(() => {
         let mounted = true;
 
-        getFarmList();
+        getAuctionList();
 
         return () => {
             mounted = false;
@@ -34,11 +33,11 @@ const AuctionsList = (props) => {
         <Page className={classes.root} title='Customer Management List'>
             <Header auth={auth} />
 
-            {farms && (
+            {auctions && (
                 <Results
                     className={classes.results}
-                    auctions={farms}
-                    deleteFarm={deleteFarm}
+                    auctions={auctions}
+                    deleteAuction={deleteAuction}
                 />
             )}
         </Page>
@@ -46,16 +45,16 @@ const AuctionsList = (props) => {
 };
 
 AuctionsList.propTypes = {
-    farms: PropTypes.array.isRequired,
-    getFarmList: PropTypes.func.isRequired,
-    deleteFarm: PropTypes.func.isRequired,
+    auctions: PropTypes.array.isRequired,
+    getAuctionList: PropTypes.func.isRequired,
+    deleteAuction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    farms: state.farm.farms,
+    auctions: state.auction.auctions,
 });
 
-export default connect(mapStateToProps, { getFarmList, deleteFarm })(
+export default connect(mapStateToProps, { getAuctionList, deleteAuction })(
     AuctionsList
 );

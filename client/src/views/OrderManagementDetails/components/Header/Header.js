@@ -63,7 +63,7 @@ const Header = props => {
 
 Header.propTypes = {
   className: PropTypes.string,
-  id: PropTypes.object.isRequired
+  id: PropTypes.string.isRequired
 };
 
 export default Header;

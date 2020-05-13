@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, Typography } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import useRouter from 'utils/useRouter';
 
 const useStyles = makeStyles(theme => ({
@@ -41,16 +40,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { className } = props;
+  const { addAuction, className } = props;
 
   const classes = useStyles();
   const { history } = useRouter();
 
   const [formState, setFormState] = useState({
     title:"",
+    farm_id:"",
     description:"",
-    start: new Date(),
-    location:"",
+    start_time: new Date(),
+    starting_price:"",
   });
 
   const handleChange = event => {
@@ -65,23 +65,17 @@ const Main = props => {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    const auctionDetail = {
+      farm_id: formState.farm_id,
+      description: formState.description,
+      start_time: formState.start_time,
+      starting_price: formState.starting_price,
+    };
 
+    addAuction(auctionDetail);
 
-  //  history.push('/dashboard/management/farms');
+    history.push('/dashboard/management/auctions');
   };
-
-  const onMarkerDragEnd = (t, map, coord) => {
-    const { latLng } = coord;
-    const lat = latLng.lat();
-    const long = latLng.lng();
-
-    setFormState(formState => ({
-      ...formState,
-      lat: lat,
-      long: long
-    }));
-  }
-
 
   return (
     <>
@@ -112,6 +106,15 @@ const Main = props => {
                 />
                 <TextField
                   fullWidth
+                  label="Farm Id"
+                  name="farm_id"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.farm_id}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
                   label="Auction description"
                   name="description"
                   onChange={handleChange}
@@ -121,11 +124,20 @@ const Main = props => {
                 />
                 <TextField
                   fullWidth
-                  label="location"
-                  name="location"
+                  label="Starting price"
+                  name="starting_price"
                   onChange={handleChange}
                   type="text"
-                  value={formState.location}
+                  value={formState.starting_price}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  label="Starting time"
+                  name="start_time"
+                  onChange={handleChange}
+                  type="date"
+                  value={formState.start_time}
                   variant="outlined"
                 />
               </div>
@@ -151,8 +163,7 @@ const Main = props => {
 
 Main.propTypes = {
   className: PropTypes.string,
+  addAuction: PropTypes.func.isRequired
 };
 
-export default GoogleApiWrapper({
-  api: ('AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo')
-})(Main);
+export default Main;

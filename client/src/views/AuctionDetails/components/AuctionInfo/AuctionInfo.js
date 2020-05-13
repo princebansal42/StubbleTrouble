@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AuctionInfo = props => {
-  const { order, className, ...rest } = props;
+  const { auction, className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -72,33 +72,33 @@ const AuctionInfo = props => {
             <TableRow>
               <TableCell>Seller</TableCell>
               <TableCell>
-                 {order.customer.name}
+                 {auction.owner}
               </TableCell>
             </TableRow>
             <TableRow selected>
               <TableCell>ID</TableCell>
-              <TableCell>#{order.id.split('-').shift()}</TableCell>
+              <TableCell>{auction._id}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Ref</TableCell>
-              <TableCell>{order.ref}</TableCell>
+              <TableCell>farm</TableCell>
+              <TableCell>{auction.farm}</TableCell>
             </TableRow>
             <TableRow selected>
               <TableCell>Start-Date</TableCell>
               <TableCell>
-                {moment(order.created_at).format('DD/MM/YYYY HH:MM')}
+                {moment(auction.start_time).format('DD/MM/YYYY HH:MM')}
               </TableCell>
             </TableRow>
       	    <TableRow>
-              <TableCell>No Of Bids So far</TableCell>
+              <TableCell>Starting price</TableCell>
               <TableCell>
-                50
+                {auction.starting_price}
               </TableCell>
             </TableRow>
 	          <TableRow selected>
-              <TableCell>Status</TableCell>
+              <TableCell>Completed</TableCell>
               <TableCell>
-                Active
+                {auction.completed == true ? "True" : "False"}
               </TableCell>
             </TableRow>
 
@@ -111,7 +111,20 @@ const AuctionInfo = props => {
 
 AuctionInfo.propTypes = {
   className: PropTypes.string,
-  order: PropTypes.object.isRequired
+  auction: PropTypes.object.isRequired
+};
+
+
+AuctionInfo.defaultProps = {
+    orders: {
+      _id:"",
+      completed: "",
+      owner: "",
+      description: "",
+      starting_price: "",
+      farm:"",
+      start_time:""
+    },
 };
 
 export default AuctionInfo;

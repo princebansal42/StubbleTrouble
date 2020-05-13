@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
 import axios from 'utils/axios';
 import { Page } from 'components';
 import { Header, AuctionInfo, AuctionItems } from './components';
+import { getAuction } from "actions/auction";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,39 +19,30 @@ const useStyles = makeStyles(theme => ({
 
 const AuctionDetails = (props) => {
   const classes = useStyles();
-  const [order, setOrder] = useState(null);
   const { match: {
       params: { id },
-  } } = props;
+  } , auction, getAuction } = props;
 
   useEffect(() => {
     let mounted = true;
 
-    const fetchOrder = () => {
-      axios.get('/api/orders/1').then(response => {
-        if (mounted) {
-          setOrder(response.data.order);
-        }
-      });
-    };
-
-    fetchOrder();
+    getAuction(id);
 
     return () => {
       mounted = false;
     };
   }, []);
 
-  if (!order) {
+  if (!auction) {
     return null;
   }
 
   return (
     <Page
       className={classes.root}
-      title="Order Management Details"
+      title="Auction Details"
     >
-      <Header id={id} order={order} />
+      <Header id={id} />
       <Grid
         className={classes.container}
         container
@@ -61,7 +54,7 @@ const AuctionDetails = (props) => {
           xl={3}
           xs={12}
         >
-          <AuctionInfo order={order} />
+          <AuctionInfo auction={auction}  />
         </Grid>
         <Grid
           item
@@ -69,11 +62,15 @@ const AuctionDetails = (props) => {
           xl={9}
           xs={12}
         >
-          <AuctionItems id={id} order={order} />
+          <AuctionItems auction={auction} />
         </Grid>
       </Grid>
     </Page>
   );
 };
 
-export default AuctionDetails;
+const mapStateToProps = (state) => ({
+    auction: state.auction.auction,
+});
+
+export default connect(mapStateToProps, { getAuction })(AuctionDetails);

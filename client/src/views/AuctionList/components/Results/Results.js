@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Results = (props) => {
-    const { className, auctions, deleteFarm, ...rest } = props;
+    const { className, auctions, deleteAuction, ...rest } = props;
 
     const classes = useStyles();
 
@@ -58,7 +58,7 @@ const Results = (props) => {
 
     const handleSelectAll = (event) => {
         const selectedAuctions = event.target.checked
-            ? auctions.map((farm) => farm.id)
+            ? auctions.map((auction) => auction.id)
             : [];
 
         setSelectedAuctions(selectedAuctions);
@@ -96,10 +96,7 @@ const Results = (props) => {
 
     const handleRowDelete = async () => {
         selectedAuctions.forEach((item, i) => {
-            console.log(item);
-            console.log(i);
-            console.log(deleteFarm);
-            deleteFarm(item);
+            deleteAuction(item);
         });
     };
 
@@ -124,31 +121,49 @@ const Results = (props) => {
                                     <TableRow>
                                         <TableCell>S.No</TableCell>
                                         <TableCell>Auction Id</TableCell>
-                                        <TableCell>Title</TableCell>
+                                        <TableCell>owner</TableCell>
+                                        <TableCell>farm</TableCell>
                                         <TableCell>Start date</TableCell>
-                                        <TableCell>status</TableCell>
-                                        <TableCell>Location</TableCell>
-                                        <TableCell>Seller</TableCell>
+                                        <TableCell>Start price</TableCell>
+                                        <TableCell>completed</TableCell>
                                         <TableCell align='right'>
                                             Actions
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {auctions.slice(0, rowsPerPage).map((farm, index) => (
-                                        <TableRow
-                                            hover
-                                            key={farm._id}
-                                            selected={
-                                                selectedAuctions.indexOf(
-                                                    farm._id
-                                                ) !== -1
-                                            }
-                                        >
-                                            <TableCell>
-                                              {index + 1}
-                                            </TableCell>
-                                            <TableCell>{farm._id}</TableCell>
+                                    {auctions.slice(0, rowsPerPage).map((auction, index) => (
+                                      <TableRow
+                                          hover
+                                          key={auction._id}
+                                          selected={
+                                              selectedAuctions.indexOf(
+                                                  auction._id
+                                              ) !== -1
+                                          }
+                                      >
+                                          <TableCell padding='checkbox'>
+                                              <Checkbox
+                                                  checked={
+                                                      selectedAuctions.indexOf(
+                                                          auction._id
+                                                      ) !== -1
+                                                  }
+                                                  color='primary'
+                                                  onChange={(event) =>
+                                                      handleSelectOne(
+                                                          event,
+                                                          auction._id
+                                                      )
+                                                  }
+                                                  value={
+                                                      selectedAuctions.indexOf(
+                                                          auction._id
+                                                      ) !== -1
+                                                  }
+                                              />
+                                          </TableCell>
+
                                             <TableCell>
                                                 <div
                                                     className={classes.nameCell}
@@ -159,32 +174,33 @@ const Results = (props) => {
                                                             component={
                                                                 RouterLink
                                                             }
-                                                            to={`/dashboard/management/auctions/${farm._id}`}
+                                                            to={`/dashboard/management/auctions/${auction._id}`}
                                                             variant='h6'
                                                         >
-                                                            {farm._id}
+                                                            {auction._id}
                                                         </Link>
-                                                        <div>{farm.email}</div>
                                                     </div>
                                                 </div>
                                             </TableCell>
+                                            <TableCell>{auction.owner}</TableCell>
                                             <TableCell>
-                                                {farm.address}
-                                            </TableCell>
-
-                                            <TableCell>
-                                                {farm.location.lat}
+                                                {auction.farm}
                                             </TableCell>
                                             <TableCell>
-                                                {farm.location.long}
+                                                {auction.start_time}
                                             </TableCell>
-                                            <TableCell>{farm.area}</TableCell>
+                                            <TableCell>
+                                              {auction.starting_price}
+                                            </TableCell>
+                                            <TableCell>
+                                              {auction.completed == true ? "True" : "False"}
+                                            </TableCell>
                                             <TableCell align='right'>
                                                 <Button
                                                     color='primary'
                                                     component={RouterLink}
                                                     size='small'
-                                                    to={`/dashboard/management/auctions/${farm._id}`}
+                                                    to={`/dashboard/management/auctions/${auction._id}`}
                                                     variant='outlined'
                                                 >
                                                     View
@@ -207,6 +223,11 @@ const Results = (props) => {
                         rowsPerPage={rowsPerPage}
                         rowsPerPageOptions={[5, 10, 25]}
                     />
+                    <TableEditBar
+                        selected={selectedAuctions}
+                        onCancel={handleCancel}
+                        onDelete={handleRowDelete}
+                    />
                 </CardActions>
             </Card>
         </div>
@@ -216,7 +237,7 @@ const Results = (props) => {
 Results.propTypes = {
     className: PropTypes.string,
     auctions: PropTypes.array.isRequired,
-    deleteFarm: PropTypes.func.isRequired,
+    deleteAuction: PropTypes.func.isRequired
 };
 
 Results.defaultProps = {

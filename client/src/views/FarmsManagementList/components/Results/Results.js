@@ -96,9 +96,6 @@ const Results = (props) => {
 
     const handleRowDelete = async () => {
         selectedFarms.forEach((item, i) => {
-            console.log(item);
-            console.log(i);
-            console.log(deleteFarm);
             deleteFarm(item);
         });
     };

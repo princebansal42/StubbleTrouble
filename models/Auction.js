@@ -16,10 +16,6 @@ const auctionSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        start_time: {
-            type: Date,
-            required: true,
-        },
         starting_price: {
             type: Number,
             required: true,
@@ -30,6 +26,11 @@ const auctionSchema = new mongoose.Schema(
         completed: {
             type: Boolean,
             default: false,
+            required: true,
+        },
+        status: {
+            type: String,
+            default: "PENDING",
             required: true,
         },
     },

@@ -27,6 +27,7 @@
         "express-validator": "^6.4.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.9.4",
+        "node-cron": "^2.0.3",
         "pusher": "^3.0.1",
         "pusher-js": "^6.0.0"
     },

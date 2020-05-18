@@ -1,3 +1,3 @@
 const auctionCache = {};
-
-module.exports = auctionCache;
+const accepting = false;
+module.exports = { auctionCache, accepting };

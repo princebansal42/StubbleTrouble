@@ -4,7 +4,7 @@ const Auction = require("../../models/Auction");
 const Farm = require("../../models/Farm");
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
-const auctionCache = require("../../auctionCache");
+const { auctionCache, accepting } = require("../../auctionCache");
 // const adminAuth = require("../../middleware/adminAuth");
 
 // @route GET api/auctions
@@ -34,7 +34,7 @@ router.post("/", auth, async (req, res) => {
             errors: [{ msg: "Not Authorised to Access this area." }],
         });
 
-    const { farm_id, description, start_time, starting_price } = req.body;
+    const { farm_id, description, starting_price } = req.body;
     try {
         const farm = await Farm.findById(farm_id);
         if (!farm)
@@ -52,7 +52,6 @@ router.post("/", auth, async (req, res) => {
             owner: id,
             farm: farm_id,
             description,
-            start_time,
             starting_price,
         });
         auction = await auction.save();
@@ -128,36 +127,15 @@ router.post("/join/:auction_id", auth, async (req, res) => {
         });
     let auction;
     console.log("ID of Auction " + auction_id);
+    if (!accepting)
+        return res.status(401).json({
+            errors: [{ msg: "Auction Not open yet" }],
+        });
     if (!auctionCache[auction_id]) {
-        try {
-            auction = await Auction.findById(auction_id);
-            if (!auction) {
-                return res.status(404).json({ msg: "Auction not found" });
-            }
+        return res.status(404).json({ msg: "Auction not found" });
+    }
 
-            auctionCache[auction_id] = {
-                registered_users: [],
-                // price:null,
-                last_bid: null,
-            };
-        } catch (err) {
-            console.error(err.message);
-            if (err.kind === "ObjectId") {
-                return res.status(404).json({ msg: "Auction not found" });
-            }
-            res.status(500).send("Server Error");
-        }
-    }
-    auctionCache[auction_id].registered_users.push(id);
-    if (!auctionCache[auction_id].last_bid) {
-        // auctionCache[auction_id].price = auction.starting_price;
-        auctionCache[auction_id].last_bid = {
-            price: auction.starting_price,
-            time: Date.now(),
-            user: id,
-        };
-    }
     console.log(auctionCache);
-    res.json({ last_bid: auctionCache[auction_id].last_bid });
+    return res.json({ last_bid: auctionCache[auction_id].last_bid });
 });
 module.exports = router;

@@ -10,23 +10,27 @@ cron.schedule("0 9 * * *", async () => {
         { status: "PENDING" },
         { status: "ACTIVE" }
     );
-    let auctions = await Auction.find({ status: "ACTIVE" });
-    for (let auction of auctions) {
-        auctionCache[auction.id] = {
-            last_bid: null,
-        };
-    }
+    // let auctions = await Auction.find({ status: "ACTIVE" });
+    // for (let auction of auctions) {
+    //     auctionCache[auction.id] = {
+    //         last_bid: null,
+    //     };
+    // }
     accepting = true;
 });
 cron.schedule("30 9 * * *", async () => {
     accepting = false;
 
-    let auctions = await Auction.find({ status: "ACTIVE" });
-    for (let auction of auctions) {
-        auction.last_bid = auctionCache[auction.id].last_bid;
-        await auction.save();
-    }
-    auctionCache = {};
+    let auction = await Auction.updateMany(
+        { status: "ACTIVE" },
+        { status: "PENDING" }
+    );
+    // let auctions = await Auction.find({ status: "ACTIVE" });
+    // for (let auction of auctions) {
+    //     auction.last_bid = auctionCache[auction.id].last_bid;
+    //     await auction.save();
+    // }
+    // auctionCache = {};
 });
 // Connecting Database
 const connectDB = require("./config/db");

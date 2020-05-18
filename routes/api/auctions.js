@@ -95,11 +95,14 @@ router.delete("/:auction_id", auth, async (req, res) => {
             return res.status(404).json({ msg: "Auction not found" });
         }
         // Only the user who has created auction can delete the post
-
         // Check User
         if (auction.owner.toString() !== id) {
             return res.status(401).json({ msg: "User not authorized" });
         }
+        if (auction.status !== "PENDING")
+            return res
+                .status(401)
+                .json({ msg: "Auction currently active. Can't be deleted" });
 
         await auction.remove();
         res.json({ msg: "Auction removed" });
@@ -125,17 +128,16 @@ router.post("/join/:auction_id", auth, async (req, res) => {
         return res.status(401).json({
             errors: [{ msg: "User not authorized" }],
         });
-    let auction;
+    // let auction;
     console.log("ID of Auction " + auction_id);
-    if (!accepting)
+    const auction = await Auction.findById(auction_id);
+    if (!auction) return res.status(404).json({ msg: "Auction not found" });
+    if (auction.status !== "ACTIVE")
         return res.status(401).json({
             errors: [{ msg: "Auction Not open yet" }],
         });
-    if (!auctionCache[auction_id]) {
-        return res.status(404).json({ msg: "Auction not found" });
-    }
 
-    console.log(auctionCache);
-    return res.json({ last_bid: auctionCache[auction_id].last_bid });
+    console.log(auction);
+    return res.json(auction);
 });
 module.exports = router;

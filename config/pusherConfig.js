@@ -4,6 +4,7 @@ const config = require("config");
 const { auctionCache, accepting } = require("../auctionCache");
 const jwt = require("jsonwebtoken");
 
+const Auction = require("../models/Auction");
 const pusherServer = new PusherServer({
     appId: config.get("pusher-appId"),
     key: config.get("pusher-key"),
@@ -18,28 +19,37 @@ const pusherClient = new PusherClient(config.get("pusher-key"), {
 
 const bidChannel = pusherClient.subscribe("bids");
 
-bidChannel.bind("add", (data) => {
+bidChannel.bind("add", async (data) => {
     const { auction_id, bidPrice, token } = data;
-    if (auctionCache[auction_id && accepting]) {
-        let decoded;
-        try {
-            decoded = jwt.verify(token, config.get("jwtSecretKey"));
-        } catch (err) {
-            console.log(err);
-        }
-        if (auctionCache[auction_id].last_bid.price < bidPrice) {
-            auctionCache[auction_id].last_bid = {
-                price: bidPrice,
+    let decoded;
+    try {
+        decoded = jwt.verify(token, config.get("jwtSecretKey"));
+    } catch (err) {
+        console.log(err);
+    }
+    let auction = await Auction.findById(auction_id);
+    if (auction && auction.status !== "ACTIVE") {
+        if (!auction.last_bid && bidPrice > auction.last_bid.bidPrice) {
+            let last_bid = {
+                bidPrice,
                 user: decoded.id,
                 time: Date.now(),
             };
-            pusherServer.trigger(
-                "bids",
-                `new-${auction_id}`,
-                auctionCache[auction_id].last_bid
-            );
+            auction.last_bid = last_bid;
+            auction = await auction.save();
+            pusherServer.trigger("bids", `new-${auction_id}`, last_bid);
         }
-    } else console.log("NO VALID AUCTION");
+    }
+
+    // if (auctionCache[auction_id && accepting]) {
+    //     if (auctionCache[auction_id].last_bid.price < bidPrice) {
+    //         auctionCache[auction_id].last_bid = {
+    //             price: bidPrice,
+    //             user: decoded.id,
+    //             time: Date.now(),
+    //         };
+
+    // } else console.log("NO VALID AUCTION");
 });
 
 module.exports = {

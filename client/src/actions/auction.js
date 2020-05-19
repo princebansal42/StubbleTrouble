@@ -92,6 +92,20 @@ export const addAuction = (auctionDetail) => async (dispatch) => {
     }
 };
 
+// Join Auction
+export const joinAuction = (id) => async (dispatch) => {
+
+    console.log(id);
+};
+
+// Bid Auction
+export const bidAuction = () => async (dispatch) => {
+    
+    console.log("ok");
+};
+
+
+
 // Edit Auction
 export const editAuction = (id, newAuctionDetail) => async (dispatch) => {
     const {

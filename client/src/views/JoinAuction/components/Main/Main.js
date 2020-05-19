@@ -40,16 +40,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { addAuction, className } = props;
+  const { id, auction, joinAuction,bidAuction, className } = props;
 
   const classes = useStyles();
   const { history } = useRouter();
 
   const [formState, setFormState] = useState({
-    title:"",
-    farm_id:"",
-    description:"",
-    starting_price:"",
+    bid: "",
+
   });
 
   const handleChange = event => {
@@ -62,18 +60,44 @@ const Main = props => {
 
   };
 
+  const handleJoin = async event => {
+    event.preventDefault();
+
+    joinAuction(id);
+
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
-    const auctionDetail = {
-      farm_id: formState.farm_id,
-      description: formState.description,
-      starting_price: formState.starting_price,
-    };
 
-    addAuction(auctionDetail);
+    bidAuction();
 
     history.push('/dashboard/management/auctions');
   };
+
+  if (!auction) {
+    return null;
+  }
+
+  if(auction!=null && auction.status != "ACTIVE"){
+    return (
+      <>
+        <Card
+          className={clsx(classes.root, className)}
+        >
+          <div>
+              <div>
+                <Typography
+                  color="initial"
+                  variant="h3"
+                >
+                  Sorry, The  Auction is not Active, So You Can't Join And Bid
+                </Typography>
+            </div>
+          </div>
+        </Card>
+    </>);
+  }
 
   return (
     <>
@@ -86,8 +110,19 @@ const Main = props => {
               color="initial"
               variant="h3"
             >
-              Add Auction
+              Join Auction and Start Bidding
             </Typography>
+            <br></br>
+            <Button
+              className={classes.submitButton}
+              color="secondary"
+              size="large"
+              onClick={handleJoin}
+              variant="contained"
+            >
+              Join Auction
+            </Button>
+            <br></br>
             <br></br>
             <form
               onSubmit={handleSubmit}
@@ -95,38 +130,11 @@ const Main = props => {
               <div className={classes.fields}>
                 <TextField
                   fullWidth
-                  label="Auction Title"
-                  name="title"
+                  label="Enter Amount"
+                  name="bid"
                   onChange={handleChange}
                   type="text"
-                  value={formState.title}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
-                  label="Farm Id"
-                  name="farm_id"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.farm_id}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
-                  label="Auction description"
-                  name="description"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.description}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
-                  label="Starting price"
-                  name="starting_price"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.starting_price}
+                  value={formState.bid}
                   variant="outlined"
                 />
 
@@ -139,7 +147,7 @@ const Main = props => {
                 type="submit"
                 variant="contained"
               >
-                Add
+                BID
               </Button>
 
             </form>
@@ -153,7 +161,10 @@ const Main = props => {
 
 Main.propTypes = {
   className: PropTypes.string,
-  addAuction: PropTypes.func.isRequired
+  id: PropTypes.string.isRequired,
+  auction: PropTypes.object,
+  joinAuction: PropTypes.func.isRequired,
+  bidAuction : PropTypes.func.isRequired,
 };
 
 export default Main;

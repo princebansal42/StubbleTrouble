@@ -43,16 +43,6 @@ const AuctionInfo = props => {
 
   const classes = useStyles();
 
-  const options = ['Canceled', 'Completed', 'Rejected'];
-
-  const [option, setOption] = useState(options[0]);
-
-  const handleChange = event => {
-    event.persist();
-
-    setOption(event.target.value);
-  };
-
   return (
     <Card
       {...rest}
@@ -83,12 +73,6 @@ const AuctionInfo = props => {
               <TableCell>farm</TableCell>
               <TableCell>{auction.farm}</TableCell>
             </TableRow>
-            <TableRow selected>
-              <TableCell>Start-Date</TableCell>
-              <TableCell>
-                {moment(auction.start_time).format('DD/MM/YYYY HH:MM')}
-              </TableCell>
-            </TableRow>
       	    <TableRow>
               <TableCell>Starting price</TableCell>
               <TableCell>
@@ -96,9 +80,9 @@ const AuctionInfo = props => {
               </TableCell>
             </TableRow>
 	          <TableRow selected>
-              <TableCell>Completed</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>
-                {auction.completed == true ? "True" : "False"}
+                {auction.status}
               </TableCell>
             </TableRow>
 

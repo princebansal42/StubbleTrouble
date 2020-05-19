@@ -123,7 +123,6 @@ const Results = (props) => {
                                         <TableCell>Auction Id</TableCell>
                                         <TableCell>owner</TableCell>
                                         <TableCell>farm</TableCell>
-                                        <TableCell>Start date</TableCell>
                                         <TableCell>Start price</TableCell>
                                         <TableCell>completed</TableCell>
                                         <TableCell align='right'>
@@ -187,9 +186,6 @@ const Results = (props) => {
                                                 {auction.farm}
                                             </TableCell>
                                             <TableCell>
-                                                {auction.start_time}
-                                            </TableCell>
-                                            <TableCell>
                                               {auction.starting_price}
                                             </TableCell>
                                             <TableCell>
@@ -204,6 +200,15 @@ const Results = (props) => {
                                                     variant='outlined'
                                                 >
                                                     View
+                                                </Button>
+                                                <Button
+                                                    color='primary'
+                                                    component={RouterLink}
+                                                    size='small'
+                                                    to={`/dashboard/management/auctions/join/${auction._id}`}
+                                                    variant='outlined'
+                                                >
+                                                    Join
                                                 </Button>
                                             </TableCell>
                                         </TableRow>

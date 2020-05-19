@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
+import useRouter from 'utils/useRouter';
 import {
   Card,
   CardHeader,
@@ -44,27 +45,10 @@ const AuctionItems = props => {
   const { className, auction, ...rest } = props;
 
   const classes = useStyles();
+  const { history } = useRouter();
 
-  const [formState, setFormState] = useState({
-    id:auction._id,
-    bid:"",
-  });
-
-  const handleChange = event => {
-    event.persist();
-
-    setFormState(formState => ({
-      ...formState,
-      [event.target.name]: event.target.value
-    }));
-
-  };
-
-  const handleSubmit = async event => {
-    event.preventDefault();
-
-
-  //  history.push('/dashboard/management/farms');
+  const handleGoToJoin = async event => {
+   history.push('/dashboard/management/auctions/join/'+auction._id);
   };
 
   return (
@@ -86,32 +70,18 @@ const AuctionItems = props => {
                 </TableRow>
                 <TableRow >
                    <TableCell>
-                   <form
-                     onSubmit={handleSubmit}
-                   >
-                     <div className={classes.fields}>
-                       <TextField
-                         fullWidth
-                         label="Bid Amount"
-                         name="bid"
-                         onChange={handleChange}
-                         type="number"
-                         value={formState.bid}
-                         variant="outlined"
-                       />
-                     </div>
 
                      <Button
                      color="secondary"
                        className={classes.submitButton}
                        size="large"
                        type="submit"
+                       onClick={handleGoToJoin}
                        variant="contained"
                      >
-                       Bid
+                       Go To Join Page
                      </Button>
 
-                   </form>
                    </TableCell>
                 </TableRow>
               </TableBody>

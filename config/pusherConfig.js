@@ -17,7 +17,7 @@ const pusherClient = new PusherClient(config.get("pusher-key"), {
     cluster: config.get("pusher-cluster"),
 });
 
-const bidChannel = pusherClient.subscribe("bids");
+const bidChannel = pusherClient.subscribe("get_bid");
 
 bidChannel.bind("add", async (data) => {
     const { auction_id, bidPrice, token } = data;
@@ -37,7 +37,7 @@ bidChannel.bind("add", async (data) => {
             };
             auction.last_bid = last_bid;
             auction = await auction.save();
-            pusherServer.trigger("bids", `new-${auction_id}`, last_bid);
+            pusherServer.trigger("new_bid", `new-${auction_id}`, auction);
         }
     }
 

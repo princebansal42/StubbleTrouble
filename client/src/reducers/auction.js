@@ -14,6 +14,10 @@ import {
     AUCTION_DELETE_REQUEST,
     AUCTION_DELETE_SUCCESS,
     AUCTION_DELETE_FAILURE,
+    AUCTION_JOIN_REQUEST,
+    AUCTION_JOIN_SUCCESS,
+    AUCTION_JOIN_FAILURE,
+    AUCTION_GET_BID,
 } from "../actions/types";
 
 const initialState = {
@@ -32,6 +36,7 @@ export default function (state = initialState, action) {
         case AUCTION_ADD_REQUEST:
         case AUCTION_EDIT_REQUEST:
         case AUCTION_DELETE_REQUEST:
+        case AUCTION_JOIN_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -52,6 +57,8 @@ export default function (state = initialState, action) {
             };
 
         case AUCTION_SUCCESS:
+        case AUCTION_JOIN_SUCCESS:
+        case AUCTION_GET_BID:
             return {
                 ...state,
                 auction: payload,
@@ -62,7 +69,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 auctions: [...state.auctions, { ...payload }],
-                auction: payload,
+                auction: null,
                 loading: false,
             };
 
@@ -78,6 +85,7 @@ export default function (state = initialState, action) {
         case AUCTION_FAILURE:
         case AUCTION_ADD_FAILURE:
         case AUCTION_DELETE_FAILURE:
+        case AUCTION_JOIN_FAILURE:
             return {
                 ...state,
                 auction: null,

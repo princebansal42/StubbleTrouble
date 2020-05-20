@@ -119,7 +119,7 @@ router.delete("/:auction_id", auth, async (req, res) => {
 // @desc    Join an auction
 // @access  Private
 
-router.post("/join/:auction_id", auth, async (req, res) => {
+router.get("/join/:auction_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     const { auction_id } = req.params;
     console.log(userType);

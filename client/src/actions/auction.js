@@ -15,8 +15,14 @@ import {
     AUCTION_DELETE_REQUEST,
     AUCTION_DELETE_SUCCESS,
     AUCTION_DELETE_FAILURE,
+    AUCTION_JOIN_REQUEST,
+    AUCTION_JOIN_SUCCESS,
+    AUCTION_JOIN_FAILURE,
+    AUCTION_GET_BID,
 } from "./types";
 
+const PusherServer = require("pusher");
+const PusherClient = require("pusher-js");
 // import setAuthToken from "../utils/setAuthToken";
 
 // Get Auctions
@@ -94,17 +100,32 @@ export const addAuction = (auctionDetail) => async (dispatch) => {
 
 // Join Auction
 export const joinAuction = (id) => async (dispatch) => {
-
+    dispatch({
+        type: AUCTION_JOIN_REQUEST,
+    });
     console.log(id);
+    try {
+        const res = await axios.get(`/api/auctions/join/${id}`);
+        dispatch({
+            type: AUCTION_JOIN_SUCCESS,
+            payload: res.data,
+        });
+    } catch (err) {
+        const errors = err.response.data.errors;
+        console.log(errors);
+        dispatch({
+            type: AUCTION_JOIN_FAILURE,
+        });
+    }
 };
 
 // Bid Auction
-export const bidAuction = () => async (dispatch) => {
-    
-    console.log("ok");
+export const bidAuction = (auction) => async (dispatch) => {
+    dispatch({
+        type: AUCTION_GET_BID,
+        payload: auction,
+    });
 };
-
-
 
 // Edit Auction
 export const editAuction = (id, newAuctionDetail) => async (dispatch) => {

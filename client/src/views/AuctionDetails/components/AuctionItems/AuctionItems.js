@@ -22,6 +22,7 @@ import {
 import PusherServer from "pusher";
 import PusherClient from "pusher-js";
 
+import bidForAuction from "utils/bidForAuction";
 let config = {
     "pusher-appId": "991405",
     "pusher-key": "b439e5441b9ccae8efcc",
@@ -63,21 +64,21 @@ const AuctionItems = (props) => {
     const [formState, setFormState] = useState({
         bidPrice,
     });
-    const pusherServer = new PusherServer({
-        appId: config["pusher-appId"],
-        key: config["pusher-key"],
-        secret: config["pusher-secret"],
-        cluster: config["pusher-cluster"],
-        useTLS: true,
-    });
+    // const pusherServer = new PusherServer({
+    //     appId: config["pusher-appId"],
+    //     key: config["pusher-key"],
+    //     secret: config["pusher-secret"],
+    //     cluster: config["pusher-cluster"],
+    //     useTLS: true,
+    // });
 
     const pusherClient = new PusherClient(config["pusher-key"], {
         cluster: config["pusher-cluster"],
     });
 
-    const channel = pusherClient.subscribe("new_bid");
+    const channel = pusherClient.subscribe(`new-${auction._id}`);
     // pusherServer.trigger("new_bid", `new-${auction.id}`, last_bid);
-    channel.bind(`new-${auction.id}`, (data) => {
+    channel.bind("new_bid", (data) => {
         console.log(" ---- GOT A NEW BID ---- ");
         const { auction } = data;
         bidAuction(auction);
@@ -93,14 +94,15 @@ const AuctionItems = (props) => {
         }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(" ---- Tried to Bid ---- ");
-        pusherServer.trigger("get_bid", "add", {
-            auction_id: auction.id,
-            bidPrice: formState.bidPrice,
-            token: localStorage.getItem("token"),
-        });
+        bidForAuction(auction._id, formState.bidPrice);
+        // pusherServer.trigger("get_bid", "add", {
+        //     auction_id: auction.id,
+        //     bidPrice: formState.bidPrice,
+        //     token: localStorage.getItem("token"),
+        // });
     };
     let display = "";
     if (auction.status === "PENDING") {

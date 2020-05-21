@@ -11,7 +11,11 @@ const bidForAuction = async (auction_id, bidPrice) => {
         bidPrice,
     });
     try {
-        const res = await axios.put(`/api/auctions/${id}/bid`, body, config);
+        const res = await axios.post(
+            `/api/auctions/${auction_id}/bid`,
+            body,
+            config
+        );
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);

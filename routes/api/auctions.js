@@ -130,7 +130,7 @@ router.delete("/:auction_id", auth, async (req, res) => {
 // @desc    Bid on an auctino
 // @access  Private
 
-router.get("/:auction_id/bid", auth, async (req, res) => {
+router.post("/:auction_id/bid", auth, async (req, res) => {
     const { id, userType } = req.user;
     const { auction_id } = req.params;
     const { bidPrice } = req.body;
@@ -142,25 +142,33 @@ router.get("/:auction_id/bid", auth, async (req, res) => {
     //     });
     // let auction;
     console.log("ID of Auction " + auction_id);
-    const auction = await Auction.findById(auction_id);
-    if (!auction) return res.status(404).json({ msg: "Auction not found" });
-    if (auction.status !== "ACTIVE")
-        return res.status(401).json({
-            errors: [{ msg: "Auction Not open yet" }],
-        });
+    try {
+        let auction = await Auction.findById(auction_id);
+        if (!auction) return res.status(404).json({ msg: "Auction not found" });
+        if (auction.status !== "ACTIVE")
+            return res.status(401).json({
+                errors: [{ msg: "Auction Not open yet" }],
+            });
 
-    let last_bid = {};
-    if (!auction.last_bid && bidPrice > auction.last_bid.bidPrice) {
+        let last_bid = {};
+        // if (!auction.last_bid && bidPrice > auction.last_bid.bidPrice) {
         last_bid = {
             bidPrice,
             user: id,
             time: Date.now(),
         };
+        // }
+        auction.last_bid = last_bid;
+        auction = await auction.save();
+        pusher.trigger(`new-${auction_id}`, "new_bid", auction);
+        console.log(auction);
+        return res.json(auction);
+    } catch (err) {
+        console.error(err.message);
+        if (err.kind === "ObjectId") {
+            return res.status(404).json({ msg: "Auction not found" });
+        }
+        res.status(500).send("Server Error");
     }
-    auction.last_bid = last_bid;
-    auction = await auction.save();
-    pusherServer.trigger(`new-${auction_id}`, "new_bid", auction);
-    console.log(auction);
-    return res.json(auction);
 });
 module.exports = router;

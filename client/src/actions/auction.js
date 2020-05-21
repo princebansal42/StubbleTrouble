@@ -21,8 +21,6 @@ import {
     AUCTION_GET_BID,
 } from "./types";
 
-const PusherServer = require("pusher");
-const PusherClient = require("pusher-js");
 // import setAuthToken from "../utils/setAuthToken";
 
 // Get Auctions

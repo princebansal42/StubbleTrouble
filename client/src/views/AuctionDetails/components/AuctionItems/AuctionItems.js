@@ -1,101 +1,206 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles } from '@material-ui/styles';
-import useRouter from 'utils/useRouter';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { makeStyles } from "@material-ui/styles";
+import useRouter from "utils/useRouter";
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  TextField,
-} from '@material-ui/core';
+    Card,
+    CardHeader,
+    CardContent,
+    Divider,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    Button,
+    TextField,
+    Typography,
+} from "@material-ui/core";
+
+import PusherServer from "pusher";
+import PusherClient from "pusher-js";
+
+let config = {
+    "pusher-appId": "991405",
+    "pusher-key": "b439e5441b9ccae8efcc",
+    "pusher-secret": "2daf92084f82b9611efb",
+    "pusher-cluster": "ap2",
+};
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  content: {
-    padding: 0
-  },
-  inner: {
-    minWidth: 700
-  },
-  fields: {
-    margin: theme.spacing(-1),
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
-      flexGrow: 1,
-      margin: theme.spacing(1)
-    }
-  },
-  submitButton: {
-    marginTop: theme.spacing(2),
-    width: '100%'
-  }
+    root: {},
+    content: {
+        padding: 0,
+    },
+    inner: {
+        minWidth: 700,
+    },
+    fields: {
+        margin: theme.spacing(-1),
+        display: "flex",
+        flexWrap: "wrap",
+        "& > *": {
+            flexGrow: 1,
+            margin: theme.spacing(1),
+        },
+    },
+    submitButton: {
+        marginTop: theme.spacing(2),
+        width: "100%",
+    },
 }));
 
-const AuctionItems = props => {
-  const { className, auction, ...rest } = props;
+const AuctionItems = (props) => {
+    const { className, auction, bidAuction, ...rest } = props;
 
-  const classes = useStyles();
-  const { history } = useRouter();
+    const classes = useStyles();
+    const { history } = useRouter();
 
-  const handleGoToJoin = async event => {
-   history.push('/dashboard/management/auctions/join/'+auction._id);
-  };
+    let bidPrice = auction.starting_price;
+    if (auction.last_bid) bidPrice = auction.last_bid.bidPrice;
+    const [formState, setFormState] = useState({
+        bidPrice,
+    });
+    const pusherServer = new PusherServer({
+        appId: config["pusher-appId"],
+        key: config["pusher-key"],
+        secret: config["pusher-secret"],
+        cluster: config["pusher-cluster"],
+        useTLS: true,
+    });
 
-  return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardHeader title="Auction Description" />
-      <Divider />
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table>
-              <TableBody>
-                <TableRow >
-                   <TableCell>
-                     {auction.description}
-                   </TableCell>
+    const pusherClient = new PusherClient(config["pusher-key"], {
+        cluster: config["pusher-cluster"],
+    });
+
+    const channel = pusherClient.subscribe("new_bid");
+    // pusherServer.trigger("new_bid", `new-${auction.id}`, last_bid);
+    channel.bind(`new-${auction.id}`, (data) => {
+        console.log(" ---- GOT A NEW BID ---- ");
+        const { auction } = data;
+        bidAuction(auction);
+    });
+
+    const handleChange = (event) => {
+        event.persist();
+
+        const { name, value } = event.target;
+        setFormState((formState) => ({
+            ...formState,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(" ---- Tried to Bid ---- ");
+        pusherServer.trigger("get_bid", "add", {
+            auction_id: auction.id,
+            bidPrice: formState.bidPrice,
+            token: localStorage.getItem("token"),
+        });
+    };
+    let display = "";
+    if (auction.status === "PENDING") {
+        display = (
+            <div className={classes.inner}>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>
+                                The Auction is Not Yet started.
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                Wait for sometime till the auction starts.
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </div>
+        );
+    } else if (auction.status === "ACTIVE") {
+        display = (
+            <div>
+                <div>
+                    <Typography color='initial' variant='h3'>
+                        Join Auction and Start Bidding
+                    </Typography>
+                    <br></br>
+
+                    <br></br>
+                    <br></br>
+                    <form onSubmit={handleSubmit}>
+                        <div className={classes.fields}>
+                            <TextField
+                                fullWidth
+                                label='Enter Amount'
+                                name='bidPrice'
+                                onChange={handleChange}
+                                type='number'
+                                value={formState.bidPrice}
+                                variant='outlined'
+                            />
+                        </div>
+
+                        <Button
+                            className={classes.submitButton}
+                            color='secondary'
+                            size='large'
+                            type='submit'
+                            variant='contained'
+                        >
+                            BID
+                        </Button>
+                    </form>
+                </div>
+            </div>
+        );
+    } else {
+        let winner = "";
+        if (auction.last_bid) {
+            winner = (
+                <TableRow>
+                    <TableCell>Winner is :</TableCell>
+                    <TableCell>{auction.last_bid.bidPrice}</TableCell>
                 </TableRow>
-                <TableRow >
-                   <TableCell>
-
-                     <Button
-                     color="secondary"
-                       className={classes.submitButton}
-                       size="large"
-                       type="submit"
-                       onClick={handleGoToJoin}
-                       variant="contained"
-                     >
-                       Go To Join Page
-                     </Button>
-
-                   </TableCell>
+            );
+        } else
+            winner = (
+                <TableRow>
+                    <TableCell>No one placed a bid.</TableCell>
                 </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-    </Card>
-  );
+            );
+        display = (
+            <div className={classes.inner}>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>The Auction is Completed.</TableCell>
+                        </TableRow>
+                        {winner}
+                    </TableBody>
+                </Table>
+            </div>
+        );
+    }
+    return (
+        <Card {...rest} className={clsx(classes.root, className)}>
+            <CardHeader title='Auction Description' />
+            <Divider />
+            <CardContent className={classes.content}>
+                <PerfectScrollbar>{display}</PerfectScrollbar>
+            </CardContent>
+        </Card>
+    );
 };
 
 AuctionItems.propTypes = {
-  className: PropTypes.string,
-  auction: PropTypes.object.isRequired,
+    className: PropTypes.string,
+    auction: PropTypes.object.isRequired,
 };
 
 export default AuctionItems;

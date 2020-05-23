@@ -30,15 +30,6 @@ let config = {
     "pusher-cluster": "ap2",
 };
 
-import PusherServer from "pusher";
-import PusherClient from "pusher-js";
-
-let config = {
-    "pusher-appId": "991405",
-    "pusher-key": "b439e5441b9ccae8efcc",
-    "pusher-secret": "2daf92084f82b9611efb",
-    "pusher-cluster": "ap2",
-};
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -203,6 +194,19 @@ const AuctionItems = (props) => {
         <Card {...rest} className={clsx(classes.root, className)}>
             <CardHeader title='Auction Description' />
             <Divider />
+            <CardContent className={classes.content}>
+                <PerfectScrollbar>
+                    <div className={classes.inner}>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>{auction.description}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </div>
+                </PerfectScrollbar>
+            </CardContent>
             <CardContent className={classes.content}>
                 <PerfectScrollbar>{display}</PerfectScrollbar>
             </CardContent>

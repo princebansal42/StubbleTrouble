@@ -8,9 +8,9 @@ import ShopIcon from '@material-ui/icons/Shop';
 const contents = {
   farmer: [
     {
-      title: 'Request For Stubble Collection',
+      title: 'Auctions',
       icon: AttachMoneyIcon,
-      href: '/dashboard'
+      href: '/dashboard/management/auctions'
     },
     {
       title: 'My Farms',
@@ -32,7 +32,7 @@ const contents = {
     {
       title: 'Buy Stubble',
       icon: ShopIcon,
-      href: '/dashboard'
+      href: '/dashboard/management/auctions'
     },
     {
       title: 'Get Stubble Uses',
@@ -54,7 +54,7 @@ const contents = {
     {
       title: 'Buy Stubble',
       icon: ShopIcon,
-      href: '/dashboard'
+      href: '/dashboard/management/auctions'
     },
     {
       title: 'Get Stubble Uses',

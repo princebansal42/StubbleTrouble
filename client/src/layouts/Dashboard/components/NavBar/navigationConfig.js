@@ -41,17 +41,9 @@ const contents = {
                             href: "/dashboard/management/auctions",
                         },
                         {
-                            title: "Customer Details",
-                            href: "/dashboard/management/customers/1/summary",
-                        },
-                        {
                             title: "Orders",
                             href: "/dashboard/management/orders",
-                        },
-                        {
-                            title: "Order Details",
-                            href: "/dashboard/management/orders/1",
-                        },
+                        }
                     ],
                 },
                 {
@@ -132,10 +124,6 @@ const contents = {
                         {
                             title: "Orders",
                             href: "/dashboard/management/orders",
-                        },
-                        {
-                            title: "Order Details",
-                            href: "/dashboard/management/orders/1",
                         },
                     ],
                 },
@@ -218,10 +206,6 @@ const contents = {
                             title: "Orders",
                             href: "/dashboard/management/orders",
                         },
-                        {
-                            title: "Order Details",
-                            href: "/dashboard/management/orders/1",
-                        },
                     ],
                 },
                 {
@@ -302,10 +286,6 @@ const contents = {
                         {
                             title: "Orders",
                             href: "/dashboard/management/orders",
-                        },
-                        {
-                            title: "Order Details",
-                            href: "/dashboard/management/orders/1",
                         },
                     ],
                 },

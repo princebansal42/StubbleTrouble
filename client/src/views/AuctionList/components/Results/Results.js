@@ -48,8 +48,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Results = (props) => {
-    const { className, auctions, deleteAuction, ...rest } = props;
-
+    const {
+      className,
+      auctions,
+      deleteAuction,
+      auth: {
+        user
+      },
+      type,
+      ...rest
+    } = props;
     const classes = useStyles();
 
     const [selectedAuctions, setSelectedAuctions] = useState([]);
@@ -104,14 +112,14 @@ const Results = (props) => {
         setSelectedAuctions([]);
     };
 
+    if (!user) {
+      return null;
+    }
+    let title = type=="own" ? 'My Auctions' : 'All Auctions';
     return (
         <div {...rest} className={clsx(classes.root, className)}>
-            <Typography color='textSecondary' gutterBottom variant='body2'>
-                {auctions.length} Records found. Page {page + 1} of{" "}
-                {Math.ceil(auctions.length / rowsPerPage)}
-            </Typography>
             <Card>
-                <CardHeader action={<GenericMoreButton />} title='All Auctions' />
+                <CardHeader action={<GenericMoreButton />} title={title} />
                 <Divider />
                 <CardContent className={classes.content}>
                     <PerfectScrollbar>
@@ -124,14 +132,18 @@ const Results = (props) => {
                                         <TableCell>owner</TableCell>
                                         <TableCell>farm</TableCell>
                                         <TableCell>Start price</TableCell>
-                                        <TableCell>completed</TableCell>
+                                        <TableCell>status</TableCell>
                                         <TableCell align='right'>
                                             Actions
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {auctions.slice(0, rowsPerPage).map((auction, index) => (
+                                    {auctions.slice(0, rowsPerPage).map((auction, index) => {
+                                      if ((auction.owner != user._id || auction.seller != user._id) && type=="own") {
+                                        return null
+                                      }
+                                      return (
                                       <TableRow
                                           hover
                                           key={auction._id}
@@ -189,7 +201,7 @@ const Results = (props) => {
                                               {auction.starting_price}
                                             </TableCell>
                                             <TableCell>
-                                              {auction.completed == true ? "True" : "False"}
+                                              {auction.status}
                                             </TableCell>
                                             <TableCell align='right'>
                                                 <Button
@@ -201,18 +213,9 @@ const Results = (props) => {
                                                 >
                                                     View
                                                 </Button>
-                                                <Button
-                                                    color='primary'
-                                                    component={RouterLink}
-                                                    size='small'
-                                                    to={`/dashboard/management/auctions/join/${auction._id}`}
-                                                    variant='outlined'
-                                                >
-                                                    Join
-                                                </Button>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )})}
                                 </TableBody>
                             </Table>
                         </div>
@@ -241,6 +244,8 @@ const Results = (props) => {
 
 Results.propTypes = {
     className: PropTypes.string,
+    auth: PropTypes.object.isRequired,
+    type: PropTypes.string.isRequired,
     auctions: PropTypes.array.isRequired,
     deleteAuction: PropTypes.func.isRequired
 };

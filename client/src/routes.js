@@ -116,11 +116,6 @@ const routes = [
                 exact: true,
                 component: lazy(() => import("views/AuctionDetails")),
             },
-	    {
-                path: "/dashboard/management/auctions/join/:id",
-                exact: true,
-                component: lazy(() => import("views/JoinAuction")),
-            },
             {
                 path: "/dashboard/management/customers/:id",
                 exact: true,

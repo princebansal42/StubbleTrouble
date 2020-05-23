@@ -17,7 +17,6 @@ const Header = props => {
   let button, userType;
   if (user) {
       userType = user.userType;
-      console.log(userType);
       if (userType == 'farmer') {
         button = <>
                   <RouterLink to="/dashboard/management/add-auction">
@@ -57,7 +56,7 @@ const Header = props => {
             component="h1"
             variant="h3"
           >
-            All Auctions
+            Auctions
           </Typography>
         </Grid>
         <Grid item>

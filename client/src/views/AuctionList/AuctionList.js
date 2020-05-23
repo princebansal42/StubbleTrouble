@@ -38,6 +38,17 @@ const AuctionsList = (props) => {
                     className={classes.results}
                     auctions={auctions}
                     deleteAuction={deleteAuction}
+                    type="own"
+                    auth={auth}
+                />
+            )}
+            {auctions && (
+                <Results
+                    className={classes.results}
+                    auctions={auctions}
+                    deleteAuction={deleteAuction}
+                    type="all"
+                    auth={auth}
                 />
             )}
         </Page>
@@ -45,6 +56,7 @@ const AuctionsList = (props) => {
 };
 
 AuctionsList.propTypes = {
+    auth: PropTypes.object.isRequired,
     auctions: PropTypes.array.isRequired,
     getAuctionList: PropTypes.func.isRequired,
     deleteAuction: PropTypes.func.isRequired

@@ -10,7 +10,7 @@ const pusherServer = new PusherServer({
     key: config.get("pusher-key"),
     secret: config.get("pusher-secret"),
     cluster: config.get("pusher-cluster"),
-    encrypted: true,
+    useTLS: true,
 });
 
 const pusherClient = new PusherClient(config.get("pusher-key"), {
@@ -20,6 +20,7 @@ const pusherClient = new PusherClient(config.get("pusher-key"), {
 const bidChannel = pusherClient.subscribe("get_bid");
 
 bidChannel.bind("add", async (data) => {
+    console.log(" ---- GOT A BID REQUEST ---- ");
     const { auction_id, bidPrice, token } = data;
     let decoded;
     try {

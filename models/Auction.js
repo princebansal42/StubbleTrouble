@@ -33,6 +33,18 @@ const auctionSchema = new mongoose.Schema(
             default: "PENDING",
             required: true,
         },
+        last_bid: {
+            bidPrice: {
+                type: Number,
+            },
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+            time: {
+                type: Date,
+            },
+        },
     },
     { timestamps: true }
 );

@@ -57,7 +57,10 @@ const Main = (props) => {
     const [formState, setFormState] = useState({
         bidPrice: "",
     });
+<<<<<<< HEAD
     var pusherClient = new PusherClient();
+=======
+>>>>>>> upstream/master
     const pusherServer = new PusherServer({
         appId: config["pusher-appId"],
         key: config["pusher-key"],
@@ -78,13 +81,12 @@ const Main = (props) => {
         }));
     };
 
-    // const handleJoin = async (event) => {
-    //     event.preventDefault();
-
-    //     joinAuction(id);
-    // };
     const channel = pusherClient.subscribe("new_bid");
+<<<<<<< HEAD
     pusherServer.trigger("new_bid", `new-${auction._id}`, 'last_bid');
+=======
+    // pusherServer.trigger("new_bid", `new-${auction.id}`, last_bid);
+>>>>>>> upstream/master
     channel.bind(`new-${auction.id}`, (data) => {
         const { auction } = data;
         bidAuction(auction);
@@ -96,12 +98,7 @@ const Main = (props) => {
             bidPrice: formState.bidPrice,
             token: localStorage.getItem("token"),
         });
-        // history.push("/dashboard/management/auctions");
     };
-
-    // if (!auction) {
-    //     return null;
-    // }
 
     // if (auction != null && auction.status != "ACTIVE")
     if (!auction) {
@@ -130,14 +127,14 @@ const Main = (props) => {
                             Join Auction and Start Bidding
                         </Typography>
                         <br></br>
-                        <Button
+                        {/* <Button
                             className={classes.submitButton}
                             color='secondary'
                             size='large'
                             variant='contained'
                         >
                             Join Auction
-                        </Button>
+                        </Button> */}
                         <br></br>
                         <br></br>
                         <form onSubmit={handleSubmit}>

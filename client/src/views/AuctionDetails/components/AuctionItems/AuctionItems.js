@@ -18,6 +18,16 @@ import {
   TextField,
 } from '@material-ui/core';
 
+import PusherServer from "pusher";
+import PusherClient from "pusher-js";
+
+let config = {
+    "pusher-appId": "991405",
+    "pusher-key": "b439e5441b9ccae8efcc",
+    "pusher-secret": "2daf92084f82b9611efb",
+    "pusher-cluster": "ap2",
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
@@ -42,13 +52,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AuctionItems = props => {
-  const { className, auction, ...rest } = props;
+  const { className, auction, bidAuction, ...rest } = props;
 
   const classes = useStyles();
   const { history } = useRouter();
+  const [formState, setFormState] = useState({
+      bidPrice: "",
+  });
+  var pusherClient = new PusherClient();
+  const pusherServer = new PusherServer({
+      appId: config["pusher-appId"],
+      key: config["pusher-key"],
+      secret: config["pusher-secret"],
+      cluster: config["pusher-cluster"],
+      encrypted: true,
+  });
 
-  const handleGoToJoin = async event => {
-   history.push('/dashboard/management/auctions/join/'+auction._id);
+  var pusherClient = new PusherClient(config["pusher-key"], {
+      cluster: config["pusher-cluster"],
+  });
+
+  const handleChange = (event) => {
+      event.persist();
+
+      setFormState((formState) => ({
+          ...formState,
+          [event.target.name]: event.target.value,
+      }));
+  };
+
+  const channel = pusherClient.subscribe("new_bid");
+  pusherServer.trigger("new_bid", `new-${auction._id}`, 'last_bid');
+  channel.bind(`new-${auction._id}`, (data) => {
+      const { auction } = data;
+      bidAuction(auction);
+  });
+  const handleSubmit = async (event) => {
+      event.preventDefault();
+      pusherServer.trigger("get_bid", "add", {
+          auction_id: auction._id,
+          bidPrice: formState.bidPrice,
+          token: localStorage.getItem("token"),
+      });
+      // history.push("/dashboard/management/auctions");
   };
 
   return (
@@ -70,18 +116,29 @@ const AuctionItems = props => {
                 </TableRow>
                 <TableRow >
                    <TableCell>
+                   <form onSubmit={handleSubmit}>
+                       <div className={classes.fields}>
+                           <TextField
+                               fullWidth
+                               label='Enter Amount'
+                               name='bid'
+                               onChange={handleChange}
+                               type='number'
+                               value={formState.bidPrice}
+                               variant='outlined'
+                           />
+                       </div>
 
-                     <Button
-                     color="secondary"
-                       className={classes.submitButton}
-                       size="large"
-                       type="submit"
-                       onClick={handleGoToJoin}
-                       variant="contained"
-                     >
-                       Go To Join Page
-                     </Button>
-
+                       <Button
+                           className={classes.submitButton}
+                           color='secondary'
+                           size='large'
+                           type='submit'
+                           variant='contained'
+                       >
+                           BID
+                       </Button>
+                   </form>
                    </TableCell>
                 </TableRow>
               </TableBody>
@@ -95,7 +152,8 @@ const AuctionItems = props => {
 
 AuctionItems.propTypes = {
   className: PropTypes.string,
-  auction: PropTypes.object.isRequired,
+  auction: PropTypes.object,
+  bidAuction: PropTypes.func.isRequired,
 };
 
 export default AuctionItems;

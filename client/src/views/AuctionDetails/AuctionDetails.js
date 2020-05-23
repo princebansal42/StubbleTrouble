@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core';
 import axios from 'utils/axios';
 import { Page } from 'components';
 import { Header, AuctionInfo, AuctionItems } from './components';
-import { getAuction } from "actions/auction";
+import { getAuction, bidAuction } from "actions/auction";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +21,7 @@ const AuctionDetails = (props) => {
   const classes = useStyles();
   const { match: {
       params: { id },
-  } , auction, getAuction } = props;
+  } , auction, getAuction, bidAuction } = props;
 
   useEffect(() => {
     let mounted = true;
@@ -62,7 +62,7 @@ const AuctionDetails = (props) => {
           xl={9}
           xs={12}
         >
-          <AuctionItems auction={auction} />
+          <AuctionItems auction={auction} bidAuction={bidAuction} />
         </Grid>
       </Grid>
     </Page>
@@ -73,4 +73,4 @@ const mapStateToProps = (state) => ({
     auction: state.auction.auction,
 });
 
-export default connect(mapStateToProps, { getAuction })(AuctionDetails);
+export default connect(mapStateToProps, { getAuction, bidAuction })(AuctionDetails);

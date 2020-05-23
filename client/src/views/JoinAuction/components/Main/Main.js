@@ -57,7 +57,7 @@ const Main = (props) => {
     const [formState, setFormState] = useState({
         bidPrice: "",
     });
-    const pusherClient = new PusherClient();
+    var pusherClient = new PusherClient();
     const pusherServer = new PusherServer({
         appId: config["pusher-appId"],
         key: config["pusher-key"],
@@ -66,7 +66,7 @@ const Main = (props) => {
         encrypted: true,
     });
 
-    const pusherClient = new PusherClient(config["pusher-key"], {
+    var pusherClient = new PusherClient(config["pusher-key"], {
         cluster: config["pusher-cluster"],
     });
     const handleChange = (event) => {
@@ -84,7 +84,7 @@ const Main = (props) => {
     //     joinAuction(id);
     // };
     const channel = pusherClient.subscribe("new_bid");
-    pusherServer.trigger("new_bid", `new-${auction_id}`, last_bid);
+    pusherServer.trigger("new_bid", `new-${auction._id}`, 'last_bid');
     channel.bind(`new-${auction.id}`, (data) => {
         const { auction } = data;
         bidAuction(auction);
@@ -134,7 +134,6 @@ const Main = (props) => {
                             className={classes.submitButton}
                             color='secondary'
                             size='large'
-                            onClick={handleJoin}
                             variant='contained'
                         >
                             Join Auction

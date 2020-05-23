@@ -140,7 +140,7 @@ const Results = (props) => {
                                 </TableHead>
                                 <TableBody>
                                     {auctions.slice(0, rowsPerPage).map((auction, index) => {
-                                      if ((auction.owner != user._id || auction.seller != user._id) && type=="own") {
+                                      if ((auction.owner != user._id && auction.seller != user._id) && type=="own") {
                                         return null
                                       }
                                       return (

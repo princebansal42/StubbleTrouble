@@ -106,12 +106,12 @@ const Results = (props) => {
 
     return (
         <div {...rest} className={clsx(classes.root, className)}>
-            <Typography color='textSecondary' gutterBottom variant='body2'>
+            <Typography color="textSecondary" gutterBottom variant="body2">
                 {farms.length} Records found. Page {page + 1} of{" "}
                 {Math.ceil(farms.length / rowsPerPage)}
             </Typography>
             <Card>
-                <CardHeader action={<GenericMoreButton />} title='All farms' />
+                <CardHeader action={<GenericMoreButton />} title="All farms" />
                 <Divider />
                 <CardContent className={classes.content}>
                     <PerfectScrollbar>
@@ -119,14 +119,14 @@ const Results = (props) => {
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell padding='checkbox'></TableCell>
+                                        <TableCell padding="checkbox"></TableCell>
                                         <TableCell>Farm Id</TableCell>
                                         <TableCell>Name</TableCell>
                                         <TableCell>Address</TableCell>
                                         <TableCell>latitude</TableCell>
                                         <TableCell>longitude</TableCell>
                                         <TableCell>Area</TableCell>
-                                        <TableCell align='right'>
+                                        <TableCell align="right">
                                             Actions
                                         </TableCell>
                                     </TableRow>
@@ -142,14 +142,14 @@ const Results = (props) => {
                                                 ) !== -1
                                             }
                                         >
-                                            <TableCell padding='checkbox'>
+                                            <TableCell padding="checkbox">
                                                 <Checkbox
                                                     checked={
                                                         selectedFarms.indexOf(
                                                             farm._id
                                                         ) !== -1
                                                     }
-                                                    color='primary'
+                                                    color="primary"
                                                     onChange={(event) =>
                                                         handleSelectOne(
                                                             event,
@@ -170,14 +170,14 @@ const Results = (props) => {
                                                 >
                                                     <div>
                                                         <Link
-                                                            color='inherit'
+                                                            color="inherit"
                                                             component={
                                                                 RouterLink
                                                             }
                                                             to={`/dashboard/management/farms/${farm._id}`}
-                                                            variant='h6'
+                                                            variant="h6"
                                                         >
-                                                            {farm._id}
+                                                            {farm.name}
                                                         </Link>
                                                         <div>{farm.email}</div>
                                                     </div>
@@ -194,13 +194,13 @@ const Results = (props) => {
                                                 {farm.location.long}
                                             </TableCell>
                                             <TableCell>{farm.area}</TableCell>
-                                            <TableCell align='right'>
+                                            <TableCell align="right">
                                                 <Button
-                                                    color='primary'
+                                                    color="primary"
                                                     component={RouterLink}
-                                                    size='small'
+                                                    size="small"
                                                     to={`/dashboard/management/farms/${farm._id}`}
-                                                    variant='outlined'
+                                                    variant="outlined"
                                                 >
                                                     Edit
                                                 </Button>
@@ -214,7 +214,7 @@ const Results = (props) => {
                 </CardContent>
                 <CardActions className={classes.actions}>
                     <TablePagination
-                        component='div'
+                        component="div"
                         count={farms.length}
                         onChangePage={handleChangePage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}

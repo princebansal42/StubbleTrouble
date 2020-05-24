@@ -4,26 +4,30 @@ const farmSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
     },
     address: {
         type: String,
-        required: true
+        required: true,
     },
     area: {
         type: Number,
-        required: true
+        required: true,
     },
     location: {
         lat: {
             type: Number,
-            required: true
+            required: true,
         },
         long: {
             type: Number,
-            required: true
-        }
-    }
+            required: true,
+        },
+    },
 });
 
 const Farm = mongoose.model("Farm", farmSchema);

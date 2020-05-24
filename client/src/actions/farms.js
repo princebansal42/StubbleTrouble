@@ -62,6 +62,7 @@ export const getFarm = (id) => async (dispatch) => {
 // Add Farm
 export const addFarm = (farmDetail) => async (dispatch) => {
     const {
+        name,
         area,
         location: { lat, long },
         address,
@@ -74,7 +75,7 @@ export const addFarm = (farmDetail) => async (dispatch) => {
             "Content-Type": "application/json",
         },
     };
-    const body = JSON.stringify({ area, lat, long, address });
+    const body = JSON.stringify({ name, area, lat, long, address });
     console.log(lat);
     try {
         const res = await axios.post("/api/farms", body, config);

@@ -56,10 +56,11 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { area, lat, long, address } = req.body;
+        const { name, area, lat, long, address } = req.body;
         try {
             let farm = new Farm({
                 owner: id,
+                name,
                 area,
                 address,
                 location: {

@@ -22,7 +22,10 @@ router.get("/", auth, async (req, res) => {
             owner: id,
         };
     try {
-        const farms = await Farm.find(query);
+        const farms = await Farm.find(query).populate({
+            path: "owner",
+            select: "name",
+        });
         return res.json(farms);
     } catch (err) {
         console.error(err.message);
@@ -89,7 +92,10 @@ router.get("/:farm_id", auth, async (req, res) => {
             .json({ errors: [{ msg: "Not Authorised to Access this area." }] });
 
     try {
-        const farm = await Farm.findById(req.params.farm_id);
+        const farm = await Farm.findById(req.params.farm_id).populate({
+            path: "owner",
+            select: "name",
+        });
         return res.json(farm);
     } catch (err) {
         console.error(err.message);
@@ -163,6 +169,10 @@ router.put("/:farm_id", auth, async (req, res) => {
         };
         farm.address = address;
         farm = await farm.save();
+        farm = await farm.populate({
+            path: "owner",
+            select: "name",
+        });
         res.json(farm);
     } catch (err) {
         console.error(err.message);

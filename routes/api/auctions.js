@@ -25,7 +25,16 @@ const pusher = new Pusher({
 router.get("/", auth, async (req, res) => {
     const { id, userType } = req.user;
     try {
-        const auctions = await Auction.find({});
+        const auctions = await Auction.find({})
+            .populate({
+                path: "owner",
+                select: "name",
+            })
+            .populate({
+                path: "farm",
+                select: "name",
+            });
+        console.log(auctions);
         return res.json(auctions);
     } catch (err) {
         console.error(err.message);
@@ -81,6 +90,14 @@ router.get("/:auction_id", auth, async (req, res) => {
     const { id, userType } = req.user;
     try {
         const auction = await Auction.findById(req.params.auction_id);
+        // .populate({
+        //     path: "owner",
+        //     select: "name",
+        // });
+        // .populate({
+        //     path: "farm",
+        //     select: "name",
+        // });
         return res.json(auction);
     } catch (err) {
         console.error(err.message);

@@ -51,12 +51,12 @@ const AuctionInfo = (props) => {
                 <Table>
                     <TableBody>
                         <TableRow>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Paddy Straw 250 kg</TableCell>
+                            <TableCell>Created At</TableCell>
+                            <TableCell>{auction.createdAt}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Seller</TableCell>
-                            <TableCell>{auction.owner._id}</TableCell>
+                            <TableCell>{auction.owner}</TableCell>
                         </TableRow>
                         <TableRow selected>
                             <TableCell>ID</TableCell>
@@ -64,7 +64,7 @@ const AuctionInfo = (props) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>farm</TableCell>
-                            <TableCell>{auction.farm._id}</TableCell>
+                            <TableCell>{auction.farm}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Starting price</TableCell>

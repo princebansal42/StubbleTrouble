@@ -207,10 +207,10 @@ const Results = (props) => {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        {auction.owner._id}
+                                                        {auction.owner && auction.owner.name}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {auction.farm._id}
+                                                        {auction.farm && auction.farm._id}
                                                     </TableCell>
                                                     <TableCell>
                                                         {auction.starting_price}

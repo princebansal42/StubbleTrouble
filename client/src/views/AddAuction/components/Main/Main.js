@@ -3,7 +3,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { Card, Typography } from "@material-ui/core";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Select, MenuItem, InputLabel } from "@material-ui/core";
 import useRouter from "utils/useRouter";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Main = (props) => {
-    const { addAuction, className } = props;
+    const { addAuction, farms,  className } = props;
 
     const classes = useStyles();
     const { history } = useRouter();
@@ -95,15 +95,28 @@ const Main = (props) => {
                                     value={formState.title}
                                     variant="outlined"
                                 />
-                                <TextField
-                                    fullWidth
-                                    label="Farm Id"
-                                    name="farm_id"
-                                    onChange={handleChange}
-                                    type="text"
-                                    value={formState.farm_id}
-                                    variant="outlined"
-                                />
+
+                                <InputLabel id="dropdown-farm-label" variant="outlined"> Select Farm</InputLabel>
+                                <Select
+                                  labelId="dropdown-farm-label"
+                                  id="dropdown-farm"
+                                  name="farm_id"
+                                  value={formState.farm_id}
+                                  onChange={handleChange}
+                                  variant="outlined"
+                                >
+                                  <MenuItem value="">
+                                    <em>None</em>
+                                  </MenuItem>
+
+                                  {farms && farms.map((farm,index) => {
+                                    return(
+                                      <MenuItem value={farm._id} key={farm._id}>{farm.name} ( {farm._id} )</MenuItem>
+                                    )
+                                  })}
+
+                                </Select>
+
                                 <TextField
                                     fullWidth
                                     label="Auction description"
@@ -143,6 +156,7 @@ const Main = (props) => {
 
 Main.propTypes = {
     className: PropTypes.string,
+    farms: PropTypes.array.isRequired,
     addAuction: PropTypes.func.isRequired,
 };
 

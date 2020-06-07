@@ -159,25 +159,11 @@ const TopBar = (props) => {
         >
             <Toolbar>
                 <RouterLink to='/'>
-                    <img alt='Logo' src='/images/logos/logo--white.svg' />
+                    <img alt='Logo' src='/images/logos/farm-white.svg' />
                 </RouterLink>
                 <div className={classes.flexGrow} />
 
                 <Hidden mdDown>
-                    <IconButton
-                        className={classes.notificationsButton}
-                        color='inherit'
-                        onClick={handleNotificationsOpen}
-                        ref={notificationsRef}
-                    >
-                        <Badge
-                            badgeContent={notifications.length}
-                            classes={{ badge: classes.notificationsBadge }}
-                            variant='dot'
-                        >
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
                     {button}
                 </Hidden>
                 <Hidden lgUp>

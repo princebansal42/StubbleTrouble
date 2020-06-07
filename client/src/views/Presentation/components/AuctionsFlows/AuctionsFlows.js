@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserFlows = props => {
+const AuctionsFlows = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -48,12 +48,10 @@ const UserFlows = props => {
               gutterBottom
               variant="h3"
             >
-              Complete User Flows
+              Auctions
             </Typography>
             <Typography variant="subtitle2">
-              Not just a set of tools, the package includes the most common use
-              cases of user flows like User Management, Second Level Layout, and
-              many more.
+              We have Auctions for buying and selling Stubble which makes this platform more profitable for both farmers and buyers.
             </Typography>
           </Grid>
           <Grid
@@ -65,7 +63,7 @@ const UserFlows = props => {
           >
             <img
               alt="User flows"
-              src="/images/presentation/user_flows.png"
+              src="/images/presentation/auctions.png"
             />
           </Grid>
         </Grid>
@@ -74,8 +72,8 @@ const UserFlows = props => {
   );
 };
 
-UserFlows.propTypes = {
+AuctionsFlows.propTypes = {
   className: PropTypes.string
 };
 
-export default UserFlows;
+export default AuctionsFlows;

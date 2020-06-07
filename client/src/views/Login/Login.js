@@ -123,13 +123,6 @@ const Login = (props) => {
           image="/images/auth.png"
           title="Cover"
         >
-          <Typography
-            color="inherit"
-            variant="subtitle1"
-          >
-            Hella narvwhal Cosby sweater McSweeney's, salvia kitsch before they
-            sold out High Life.
-          </Typography>
         </CardMedia>
       </Card>
     </Page>

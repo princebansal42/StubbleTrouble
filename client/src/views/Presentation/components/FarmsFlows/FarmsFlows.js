@@ -6,7 +6,7 @@ import { Typography, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.white
+    backgroundColor: theme.palette.background.default
   },
   inner: {
     padding: theme.spacing(6, 3),
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PluginsSupport = props => {
+const FarmsFlows = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -48,12 +48,10 @@ const PluginsSupport = props => {
               gutterBottom
               variant="h3"
             >
-              Support for Plugins
+              Farms Management
             </Typography>
             <Typography variant="subtitle2">
-              The kit provides support for multiple third-party plugins right
-              out of the box like Chart.js, Dropzone.js, Kanban Plugin and many
-              more.
+              We have simple management dashboard for farmers
             </Typography>
           </Grid>
           <Grid
@@ -65,7 +63,7 @@ const PluginsSupport = props => {
           >
             <img
               alt="User flows"
-              src="/images/presentation/plugins_support.png"
+              src="/images/presentation/farms.png"
             />
           </Grid>
         </Grid>
@@ -74,8 +72,8 @@ const PluginsSupport = props => {
   );
 };
 
-PluginsSupport.propTypes = {
+FarmsFlows.propTypes = {
   className: PropTypes.string
 };
 
-export default PluginsSupport;
+export default FarmsFlows;

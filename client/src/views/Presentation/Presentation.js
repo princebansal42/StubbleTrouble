@@ -4,10 +4,9 @@ import { makeStyles } from '@material-ui/styles';
 import { Page } from 'components';
 import {
   Header,
-  FAQ,
-  PluginsSupport,
-  SourceFiles,
-  UserFlows
+  OrdersFlows,
+  FarmsFlows,
+  AuctionsFlows
 } from './components';
 
 const useStyles = makeStyles(() => ({
@@ -23,10 +22,9 @@ const Presentation = () => {
       title="Presentation"
     >
       <Header />
-      <UserFlows />
-      <PluginsSupport />
-      <SourceFiles />
-      <FAQ />
+      <AuctionsFlows />
+      <FarmsFlows />
+      <OrdersFlows />
     </Page>
   );
 };

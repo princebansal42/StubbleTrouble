@@ -75,104 +75,15 @@ const Header = props => {
           component="h2"
           variant="subtitle1"
         >
-          A professional kit that comes with ready-to-use Material-UI©
-          components developed with one common goal in mind, help you build
-          faster &amp; beautiful applications. Each component is fully
-          customizable, responsive and easy to integrate.
+          We are aiming to provide a marketplace and an online self-sustainable business model
+          which would connect farmers to potential buyers of stubble. In this way the stubble
+          burning could be stopped and could be used in an efficient way.
         </Typography>
         <div className={classes.buttons}>
         </div>
       </div>
 
-      <div className={classes.stats}>
-        <Grid
-          alignItems="center"
-          className={classes.statsInner}
-          container
-          justify="center"
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={3}
-            md={6}
-            xs={12}
-          >
-            <Typography
-              color="inherit"
-              gutterBottom
-              variant="h3"
-            >
-              30+
-            </Typography>
-            <Typography
-              color="inherit"
-              variant="body2"
-            >
-              Demo Pages
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            md={6}
-            xs={12}
-          >
-            <Typography
-              color="inherit"
-              gutterBottom
-              variant="h3"
-            >
-              UX
-            </Typography>
-            <Typography
-              color="inherit"
-              variant="body2"
-            >
-              Complete Flows
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            md={6}
-            xs={12}
-          >
-            <Typography
-              color="inherit"
-              gutterBottom
-              variant="h3"
-            >
-              300+
-            </Typography>
-            <Typography
-              color="inherit"
-              variant="body2"
-            >
-              Components
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            md={6}
-            xs={12}
-          >
-            <div>
-              <img
-                alt="React"
-                src="/images/react.png"
-              />
-            </div>
-            <Typography
-              color="inherit"
-              variant="body2"
-            >
-              React Hooks API
-            </Typography>
-          </Grid>
-        </Grid>
-      </div>
+      
     </div>
   );
 };

@@ -81,16 +81,6 @@ const contents = {
                 },
             ],
         },
-        {
-            title: "Support",
-            pages: [
-                {
-                    title: "Getting started",
-                    href: "/getting-started",
-                    icon: CodeIcon,
-                },
-            ],
-        },
     ],
     buyer: [
         {
@@ -159,16 +149,6 @@ const contents = {
                             href: "/dashboard/settings/security",
                         },
                     ],
-                },
-            ],
-        },
-        {
-            title: "Support",
-            pages: [
-                {
-                    title: "Getting started",
-                    href: "/",
-                    icon: CodeIcon,
                 },
             ],
         },
@@ -243,16 +223,6 @@ const contents = {
                 },
             ],
         },
-        {
-            title: "Support",
-            pages: [
-                {
-                    title: "Getting started",
-                    href: "/",
-                    icon: CodeIcon,
-                },
-            ],
-        },
     ],
     logistics: [
         {
@@ -321,16 +291,6 @@ const contents = {
                             href: "/dashboard/settings/security",
                         },
                     ],
-                },
-            ],
-        },
-        {
-            title: "Support",
-            pages: [
-                {
-                    title: "Getting started",
-                    href: "/",
-                    icon: CodeIcon,
                 },
             ],
         },

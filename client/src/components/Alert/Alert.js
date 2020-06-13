@@ -73,12 +73,11 @@ const Alert = forwardRef((props, ref) => {
       {...rest}
       className={clsx(classes.root, classes[variant], className)}
       component={Typography}
-      elevation={1}
       ref={ref}
-      variant="h6"
+      variant="outlined"
     >
       <span className={classes.icon}>{icon || icons[variant]}</span>
-      <div className={classes.message}>{message}</div>
+      <span className={classes.message}>{message}</span>
       {onClose && (
         <IconButton
           className={classes.action}

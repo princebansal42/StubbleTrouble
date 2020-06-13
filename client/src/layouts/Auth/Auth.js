@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/styles";
 import { LinearProgress } from "@material-ui/core";
 
 import { Topbar } from "./components";
+import { Alerts } from "components";
+
 
 import { Redirect } from "react-router-dom";
 
@@ -30,6 +32,7 @@ const Auth = (props) => {
         <Fragment>
             <Topbar />
             <main className={classes.content}>
+                <Alerts />
                 <Suspense fallback={<LinearProgress />}>
                     {renderRoutes(route.routes)}
                 </Suspense>

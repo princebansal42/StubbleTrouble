@@ -4,6 +4,7 @@ import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
+import { Alerts } from "components";
 
 import { TopBar } from './components';
 import { logout } from "actions";
@@ -27,6 +28,7 @@ const Landing = props => {
     <Fragment>
       <TopBar auth={auth} logout={logout}/>
       <main className={classes.content}>
+        <Alerts />
         <Suspense fallback={<LinearProgress />}>
           {renderRoutes(route.routes)}
         </Suspense>

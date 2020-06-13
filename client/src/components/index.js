@@ -1,5 +1,6 @@
 export { default as AddPost } from "./AddPost";
 export { default as Alert } from "./Alert";
+export { default as Alerts } from "./Alerts";
 export { default as AuthGuard } from "./AuthGuard";
 export { default as CodeBlock } from "./CodeBlock";
 // export { default as CookiesNotification } from './CookiesNotification';

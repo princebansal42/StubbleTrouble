@@ -4,6 +4,7 @@ import { renderRoutes } from "react-router-config";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { LinearProgress } from "@material-ui/core";
+import { Alerts } from "components";
 
 import { NavBar, TopBar } from "./components";
 import { logout } from "actions";
@@ -66,6 +67,7 @@ const Dashboard = (props) => {
                     auth={auth}
                 />
                 <main className={classes.content}>
+                    <Alerts />
                     <Suspense fallback={<LinearProgress />}>
                         {renderRoutes(route.routes)}
                     </Suspense>

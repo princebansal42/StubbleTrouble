@@ -12,6 +12,7 @@ import {
 } from "./types";
 
 import setAuthToken from "../utils/setAuthToken";
+import { setAlert } from "actions/alert";
 
 // load User
 export const loadUser = () => async (dispatch) => {
@@ -56,12 +57,14 @@ export const register = ({ name, email, password, userType }) => async (
             payload: res.data,
         });
         dispatch(loadUser());
+        dispatch(setAlert("registered successfully", 'success'))
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: REGISTER_FAILURE,
         });
+        dispatch(setAlert("registeration failed", 'error'))
     }
 };
 
@@ -85,6 +88,7 @@ export const login = (email, password) => async (dispatch) => {
             payload: res.data,
         });
         dispatch(loadUser());
+        dispatch(setAlert("login successfully", 'success'))
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
@@ -92,6 +96,7 @@ export const login = (email, password) => async (dispatch) => {
         dispatch({
             type: LOGIN_FAILURE,
         });
+        dispatch(setAlert("login failed", 'error'))
     }
 };
 

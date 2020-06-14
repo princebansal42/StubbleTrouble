@@ -10,6 +10,11 @@ export const LOGIN_FAILURE = "LOGIN_FAILURE";
 // Logout and Clearing Constants
 export const LOGOUT = "LOGOUT";
 
+// Password Change Constants
+export const PASSWORD_CHANGE_REQUEST = "PASSWORD_CHANGE_REQUEST";
+export const PASSWORD_CHANGE_SUCCESS = "PASSWORD_CHANGE_SUCCESS";
+export const PASSWORD_CHANGE_FAILURE = "PASSWORD_CHANGE_FAILURE";
+
 // User Loading Constants
 export const LOAD_USER = "LOAD_USER";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -75,3 +80,7 @@ export const ORDER_LIST_FAILURE = "ORDER_LIST_FAILURE";
 export const ORDER_REQUEST = "ORDER_REQUEST";
 export const ORDER_SUCCESS = "ORDER_SUCCESS";
 export const ORDER_FAILURE = "ORDER_FAILURE";
+
+export const ORDER_EDIT_REQUEST = "ORDER_EDIT_REQUEST";
+export const ORDER_EDIT_SUCCESS = "ORDER_EDIT_SUCCESS";
+export const ORDER_EDIT_FAILURE = "ORDER_EDIT_FAILURE";

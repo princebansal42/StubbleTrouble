@@ -29,7 +29,7 @@ router.get("/", auth, async (req, res) => {
         return res.json(farms);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -75,7 +75,7 @@ router.post(
             return res.json(farm);
         } catch (err) {
             console.error(err.message);
-            return res.status(500).send("Server Error");
+            return res.status(500).json([{ msg: "Server Error" }]);
         }
     }
 );
@@ -99,7 +99,7 @@ router.get("/:farm_id", auth, async (req, res) => {
         return res.json(farm);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -134,7 +134,7 @@ router.delete("/:farm_id", auth, async (req, res) => {
         if (err.kind === "ObjectId") {
             return res.status(404).json({ msg: "Farm not found" });
         }
-        res.status(500).send("Server Error");
+        res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -179,7 +179,7 @@ router.put("/:farm_id", auth, async (req, res) => {
         if (err.kind === "ObjectId") {
             return res.status(404).json({ msg: "Farm not found" });
         }
-        res.status(500).send("Server Error");
+        res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 module.exports = router;

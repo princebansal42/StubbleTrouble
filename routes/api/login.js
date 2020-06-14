@@ -15,9 +15,7 @@ router.post(
     "/",
     [
         check("email", "Please enter a valid email").isEmail(),
-        check("password", "Password is required")
-            .not()
-            .isEmpty()
+        check("password", "Password is required").not().isEmpty(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -37,7 +35,7 @@ router.post(
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).json({
-                    errors: [{ msg: "Password do not Match. Try Again." }]
+                    errors: [{ msg: "Password do not Match. Try Again." }],
                 });
             }
 
@@ -45,14 +43,14 @@ router.post(
             const payload = {
                 user: {
                     id,
-                    userType
-                }
+                    userType,
+                },
             };
             jwt.sign(
                 payload,
                 config.get("jwtSecretKey"),
                 {
-                    expiresIn: 360000
+                    expiresIn: 360000,
                 },
                 (err, token) => {
                     if (err) throw err;
@@ -61,7 +59,7 @@ router.post(
             );
         } catch (err) {
             console.error(err.message);
-            return res.status(500).send("Server Error");
+            return res.status(500).json([{ msg: "Server Error" }]);
         }
     }
 );

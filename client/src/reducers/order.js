@@ -5,6 +5,9 @@ import {
     ORDER_REQUEST,
     ORDER_SUCCESS,
     ORDER_FAILURE,
+    ORDER_EDIT_REQUEST,
+    ORDER_EDIT_SUCCESS,
+    ORDER_EDIT_FAILURE,
 } from "../actions/types";
 
 const initialState = {
@@ -20,6 +23,7 @@ export default function (state = initialState, action) {
     switch (type) {
         case ORDER_LIST_REQUEST:
         case ORDER_REQUEST:
+        case ORDER_EDIT_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -38,7 +42,7 @@ export default function (state = initialState, action) {
                 order: null,
                 loading: false,
             };
-
+        case ORDER_EDIT_SUCCESS:
         case ORDER_SUCCESS:
             return {
                 ...state,
@@ -47,6 +51,7 @@ export default function (state = initialState, action) {
             };
 
         case ORDER_FAILURE:
+        case ORDER_EDIT_FAILURE:
             return {
                 ...state,
                 order: null,

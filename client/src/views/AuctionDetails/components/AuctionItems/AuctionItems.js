@@ -19,7 +19,7 @@ import {
     Typography,
 } from "@material-ui/core";
 
-import PusherServer from "pusher";
+// import PusherServer from "pusher";
 import PusherClient from "pusher-js";
 
 import bidForAuction from "utils/bidForAuction";
@@ -29,7 +29,6 @@ let config = {
     "pusher-secret": "2daf92084f82b9611efb",
     "pusher-cluster": "ap2",
 };
-
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -77,12 +76,18 @@ const AuctionItems = (props) => {
         cluster: config["pusher-cluster"],
     });
 
-    const channel = pusherClient.subscribe(`new-${auction._id}`);
+    const channel = pusherClient.subscribe(`${auction._id}`);
     // pusherServer.trigger("new_bid", `new-${auction.id}`, last_bid);
     channel.bind("new_bid", (data) => {
-        console.log(" ---- GOT A NEW BID ---- ");
-        const { auction } = data;
-        bidAuction(auction);
+        console.log("PUSHER GAVE THIS TO US");
+        // console.log(data);
+
+        // const { auction } = data;
+        bidAuction(data);
+        setFormState((formState) => ({
+            ...formState,
+            bidPrice: data.last_bid.bidPrice,
+        }));
     });
 
     const handleChange = (event) => {
@@ -98,7 +103,9 @@ const AuctionItems = (props) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(" ---- Tried to Bid ---- ");
+        console.log(`${auction._id}, ${formState.bidPrice}`);
         bidForAuction(auction._id, formState.bidPrice);
+
         // pusherServer.trigger("get_bid", "add", {
         //     auction_id: auction.id,
         //     bidPrice: formState.bidPrice,
@@ -129,32 +136,32 @@ const AuctionItems = (props) => {
         display = (
             <div>
                 <div>
-                    <Typography color='initial' variant='h3'>
+                    <Typography color="initial" variant="h3">
                         Join Auction and Start Bidding
                     </Typography>
                     <br></br>
-
+                    <p>This is the new price{auction.last_bid.bidPrice}</p>
                     <br></br>
                     <br></br>
                     <form onSubmit={handleSubmit}>
                         <div className={classes.fields}>
                             <TextField
                                 fullWidth
-                                label='Enter Amount'
-                                name='bidPrice'
+                                label="Enter Amount"
+                                name="bidPrice"
                                 onChange={handleChange}
-                                type='number'
+                                type="number"
                                 value={formState.bidPrice}
-                                variant='outlined'
+                                variant="outlined"
                             />
                         </div>
 
                         <Button
                             className={classes.submitButton}
-                            color='secondary'
-                            size='large'
-                            type='submit'
-                            variant='contained'
+                            color="secondary"
+                            size="large"
+                            type="submit"
+                            variant="contained"
                         >
                             BID
                         </Button>
@@ -192,7 +199,7 @@ const AuctionItems = (props) => {
     }
     return (
         <Card {...rest} className={clsx(classes.root, className)}>
-            <CardHeader title='Auction Description' />
+            <CardHeader title="Auction Description" />
             <Divider />
             <CardContent className={classes.content}>
                 <PerfectScrollbar>

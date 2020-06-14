@@ -8,6 +8,9 @@ import {
     LOAD_USER,
     AUTH_ERROR,
     LOGOUT,
+    PASSWORD_CHANGE_REQUEST,
+    PASSWORD_CHANGE_SUCCESS,
+    PASSWORD_CHANGE_FAILURE,
 } from "../actions/types";
 
 const initialState = {
@@ -30,9 +33,17 @@ export default function (state = initialState, action) {
             };
         case REGISTER_REQUEST:
         case LOGIN_REQUEST:
+        case PASSWORD_CHANGE_REQUEST:
             return {
                 ...state,
                 loading: true,
+            };
+
+        case PASSWORD_CHANGE_SUCCESS:
+        case PASSWORD_CHANGE_FAILURE:
+            return {
+                ...state,
+                loading: false,
             };
 
         case REGISTER_SUCCESS:

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const Auction = require("./models/Auction");
+const Order = require("./models/Order");
 const cron = require("node-cron");
 const { auctionCache, accepting } = require("./auctionCache");
 
@@ -30,17 +31,49 @@ cron.schedule("27 22 * * *", async () => {
     console.log("-------- Auction Started.... --------");
     // accepting = true;
 });
-cron.schedule("29 22 * * *", async () => {
+cron.schedule("08 20 * * *", async () => {
     console.log("-------- Auction Ending.... --------");
     // accepting = false;
     console.log(Date.now());
-    await Auction.updateMany({ status: "ACTIVE" }, { status: "CLOSED" });
-    // let auctions = await Auction.find({ status: "ACTIVE" });
-    // for (let auction of auctions) {
-    //     auction.last_bid = auctionCache[auction.id].last_bid;
-    //     await auction.save();
+
+    let auctions = await Auction.find({ status: "ACTIVE" });
+    console.log(auctions);
+
+    let orders = [];
+    auctions.forEach((auction) => {
+        if (auction.last_bid) {
+            let order = new Order({
+                seller: auction.owner,
+                buyer: auction.last_bid.user,
+                cost: auction.last_bid.bidPrice,
+                auction: auction._id,
+            });
+            console.log(order);
+            orders.push(order);
+        }
+    });
+    // for (let auction in auctions) {
+    //     if (auction.last_bid) {
+    //         let order = new Order({
+    //             seller: auction.owner,
+    //             buyer: auction.last_bid.user,
+    //             cost: auction.last_bid.bidPrice,
+    //             auction: auction._id,
+    //         });
+    //         console.log(order);
+    //         orders.push(order);
+    //     }
     // }
-    // auctionCache = {};
+    console.log(orders);
+    await Auction.updateMany({ status: "ACTIVE" }, { status: "CLOSED" });
+
+    orders.forEach(async (order) => {
+        await order.save();
+    });
+    // for (let order in orders) {
+    //     console.log(order);
+    //     await order.save();
+    // }
     console.log("-------- Auction Ended.... --------");
 });
 const PORT = process.env.PORT || 5000;

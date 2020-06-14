@@ -86,14 +86,14 @@ export const addAuction = (auctionDetail) => async (dispatch) => {
             type: AUCTION_ADD_SUCCESS,
             payload: res.data,
         });
-        dispatch(setAlert("auction added successfully", 'success'))
+        dispatch(setAlert("auction added successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: AUCTION_ADD_FAILURE,
         });
-        dispatch(setAlert("auction addition failed", 'error'))
+        dispatch(setAlert("auction addition failed", "error"));
     }
 };
 
@@ -109,19 +109,22 @@ export const joinAuction = (id) => async (dispatch) => {
             type: AUCTION_JOIN_SUCCESS,
             payload: res.data,
         });
-        dispatch(setAlert("auction joined successfully", 'success'))
+        dispatch(setAlert("auction joined successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: AUCTION_JOIN_FAILURE,
         });
-        dispatch(setAlert("auction joining failed", 'error'))
+        dispatch(setAlert("auction joining failed", "error"));
     }
 };
 
 // Bid Auction
 export const bidAuction = (auction) => async (dispatch) => {
+    console.log("THIS IS THE WNEW AUCTION OBJECT WE GOT");
+    console.log(auction);
+
     dispatch({
         type: AUCTION_GET_BID,
         payload: auction,
@@ -157,14 +160,14 @@ export const editAuction = (id, newAuctionDetail) => async (dispatch) => {
             type: AUCTION_EDIT_SUCCESS,
             payload: res.data,
         });
-        dispatch(setAlert("auction edited successfully", 'success'))
+        dispatch(setAlert("auction edited successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: AUCTION_EDIT_FAILURE,
         });
-        dispatch(setAlert("registered successfully", 'error'))
+        dispatch(setAlert("registered successfully", "error"));
     }
 };
 
@@ -181,13 +184,13 @@ export const deleteAuction = (id) => async (dispatch) => {
             type: AUCTION_DELETE_SUCCESS,
             payload: id,
         });
-        dispatch(setAlert("auction deleted successfully", 'success'))
+        dispatch(setAlert("auction deleted successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: AUCTION_DELETE_FAILURE,
         });
-        dispatch(setAlert("auction deletion failed", 'error'))
+        dispatch(setAlert("auction deletion failed", "error"));
     }
 };

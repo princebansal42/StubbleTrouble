@@ -14,25 +14,25 @@ const orderSchema = new mongoose.Schema(
         },
         address: {
             type: String,
-            required: true,
+            // required: true,
         },
-        location: {
-            lat: {
-                type: Number,
-                required: true,
-            },
-            long: {
-                type: Number,
-                required: true,
-            },
-        },
+        // location: {
+        //     lat: {
+        //         type: Number,
+        //         required: true,
+        //     },
+        //     long: {
+        //         type: Number,
+        //         required: true,
+        //     },
+        // },
         cost: {
             type: Number,
             required: true,
         },
         auction: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Auction",
             required: true,
         },
         //     products: {

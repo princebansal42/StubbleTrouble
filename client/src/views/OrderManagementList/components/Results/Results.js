@@ -63,15 +63,14 @@ const Results = (props) => {
         setRowsPerPage(event.target.value);
     };
 
-
     return (
         <div {...rest} className={clsx(classes.root, className)}>
-            <Typography color='textSecondary' gutterBottom variant='body2'>
+            <Typography color="textSecondary" gutterBottom variant="body2">
                 {orders.length} Records found. Page {page + 1} of{" "}
                 {Math.ceil(orders.length / rowsPerPage)}
             </Typography>
             <Card>
-                <CardHeader action={<GenericMoreButton />} title='All orders' />
+                <CardHeader action={<GenericMoreButton />} title="All orders" />
                 <Divider />
                 <CardContent className={classes.content}>
                     <PerfectScrollbar>
@@ -84,71 +83,68 @@ const Results = (props) => {
                                         <TableCell>Seller</TableCell>
                                         <TableCell>Buyer</TableCell>
                                         <TableCell>Address</TableCell>
-                                        <TableCell>latitude</TableCell>
-                                        <TableCell>longitude</TableCell>
                                         <TableCell>Cost</TableCell>
-                                        <TableCell align='right'>
+                                        <TableCell align="right">
                                             Actions
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {orders.slice(0, rowsPerPage).map((order,index) => (
-                                        <TableRow
-                                            hover
-                                            key={order._id}
-                                        >
-                                            <TableCell>
-                                                {index + 1}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div
-                                                    className={classes.nameCell}
-                                                >
-                                                    <div>
-                                                        <Link
-                                                            color='inherit'
-                                                            component={
-                                                                RouterLink
-                                                            }
-                                                            to={`/dashboard/management/orders/${order._id}`}
-                                                            variant='h6'
-                                                        >
-                                                            {order._id}
-                                                        </Link>
+                                    {orders
+                                        .slice(0, rowsPerPage)
+                                        .map((order, index) => (
+                                            <TableRow hover key={order._id}>
+                                                <TableCell>
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div
+                                                        className={
+                                                            classes.nameCell
+                                                        }
+                                                    >
+                                                        <div>
+                                                            <Link
+                                                                color="inherit"
+                                                                component={
+                                                                    RouterLink
+                                                                }
+                                                                to={`/dashboard/management/orders/${order._id}`}
+                                                                variant="h6"
+                                                            >
+                                                                {order._id}
+                                                            </Link>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.seller}
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.buyer}
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.address}
-                                            </TableCell>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {order.seller}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {order.buyer}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {order.address &&
+                                                        "Order has no address"}
+                                                </TableCell>
 
-                                            <TableCell>
-                                                {order.location.lat}
-                                            </TableCell>
-                                            <TableCell>
-                                                {order.location.long}
-                                            </TableCell>
-                                            <TableCell>{order.cost}</TableCell>
-                                            <TableCell align='right'>
-                                                <Button
-                                                    color='primary'
-                                                    component={RouterLink}
-                                                    size='small'
-                                                    to={`/dashboard/management/orders/${order._id}`}
-                                                    variant='outlined'
-                                                >
-                                                    View
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                                <TableCell>
+                                                    {order.cost}
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    <Button
+                                                        color="primary"
+                                                        component={RouterLink}
+                                                        size="small"
+                                                        to={`/dashboard/management/orders/${order._id}`}
+                                                        variant="outlined"
+                                                        s
+                                                    >
+                                                        View
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                 </TableBody>
                             </Table>
                         </div>
@@ -156,7 +152,7 @@ const Results = (props) => {
                 </CardContent>
                 <CardActions className={classes.actions}>
                     <TablePagination
-                        component='div'
+                        component="div"
                         count={orders.length}
                         onChangePage={handleChangePage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -165,7 +161,7 @@ const Results = (props) => {
                         rowsPerPageOptions={[5, 10, 25]}
                     />
                 </CardActions>
-                </Card>
+            </Card>
         </div>
     );
 };

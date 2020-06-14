@@ -34,11 +34,11 @@ router.get("/", auth, async (req, res) => {
                 path: "farm",
                 select: "name",
             });
-        console.log(auctions);
+        // console.log(auctions);
         return res.json(auctions);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -78,7 +78,7 @@ router.post("/", auth, async (req, res) => {
         return res.json(auction);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -101,7 +101,7 @@ router.get("/:auction_id", auth, async (req, res) => {
         return res.json(auction);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -139,7 +139,7 @@ router.delete("/:auction_id", auth, async (req, res) => {
         if (err.kind === "ObjectId") {
             return res.status(404).json({ msg: "Auction not found" });
         }
-        res.status(500).send("Server Error");
+        res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -158,7 +158,7 @@ router.post("/:auction_id/bid", auth, async (req, res) => {
     //         errors: [{ msg: "User not authorized" }],
     //     });
     // let auction;
-    console.log("ID of Auction " + auction_id);
+    // console.log("ID of Auction " + auction_id);
     try {
         let auction = await Auction.findById(auction_id);
         if (!auction) return res.status(404).json({ msg: "Auction not found" });
@@ -177,7 +177,7 @@ router.post("/:auction_id/bid", auth, async (req, res) => {
         // }
         auction.last_bid = last_bid;
         auction = await auction.save();
-        pusher.trigger(`new-${auction_id}`, "new_bid", auction);
+        pusher.trigger(`${auction_id}`, "new_bid", auction);
         console.log(auction);
         return res.json(auction);
     } catch (err) {
@@ -185,7 +185,7 @@ router.post("/:auction_id/bid", auth, async (req, res) => {
         if (err.kind === "ObjectId") {
             return res.status(404).json({ msg: "Auction not found" });
         }
-        res.status(500).send("Server Error");
+        res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 module.exports = router;

@@ -9,6 +9,9 @@ import {
     LOAD_USER,
     AUTH_ERROR,
     LOGOUT,
+    PASSWORD_CHANGE_REQUEST,
+    PASSWORD_CHANGE_SUCCESS,
+    PASSWORD_CHANGE_FAILURE,
 } from "./types";
 
 import setAuthToken from "../utils/setAuthToken";
@@ -29,7 +32,7 @@ export const loadUser = () => async (dispatch) => {
             dispatch({
                 type: AUTH_ERROR,
             });
-	    console.log(err.response.data.errors);
+            console.log(err.response.data.errors);
         }
     } else dispatch({ type: AUTH_ERROR });
 };
@@ -46,9 +49,6 @@ export const register = ({ name, email, password, userType }) => async (
             "Content-Type": "application/json",
         },
     };
-    console.log(
-        `name : ${name}, email: ${email}, password: ${password}, userType: ${userType}`
-    );
     const body = JSON.stringify({ name, email, password, userType });
     try {
         const res = await axios.post("/api/users", body, config);
@@ -57,14 +57,14 @@ export const register = ({ name, email, password, userType }) => async (
             payload: res.data,
         });
         dispatch(loadUser());
-        dispatch(setAlert("registered successfully", 'success'))
+        dispatch(setAlert("registered successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: REGISTER_FAILURE,
         });
-        dispatch(setAlert("registeration failed", 'error'))
+        dispatch(setAlert("registeration failed", "error"));
     }
 };
 
@@ -88,7 +88,7 @@ export const login = (email, password) => async (dispatch) => {
             payload: res.data,
         });
         dispatch(loadUser());
-        dispatch(setAlert("login successfully", 'success'))
+        dispatch(setAlert("login successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
@@ -96,12 +96,43 @@ export const login = (email, password) => async (dispatch) => {
         dispatch({
             type: LOGIN_FAILURE,
         });
-        dispatch(setAlert("login failed", 'error'))
+        dispatch(setAlert("login failed", "error"));
     }
 };
 
 // Logout
-
 export const logout = () => async (dispatch) => {
     dispatch({ type: LOGOUT });
+};
+
+// Change Password
+export const changePassword = (oldPassword, newPassword) => async (
+    dispatch
+) => {
+    dispatch({
+        type: PASSWORD_CHANGE_REQUEST,
+    });
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    const body = JSON.stringify({ oldPassword, newPassword });
+
+    try {
+        const res = await axios.put("/api/users/password", body, config);
+        dispatch({
+            type: PASSWORD_CHANGE_SUCCESS,
+        });
+        dispatch(setAlert(res.data, "success"));
+    } catch (err) {
+        const errors = err.response.data.errors;
+        console.log(errors);
+
+        dispatch({
+            type: PASSWORD_CHANGE_FAILURE,
+        });
+        dispatch(setAlert("Password Not changed", "error"));
+    }
 };

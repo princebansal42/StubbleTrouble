@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("config");
 
+const auth = require("../../middleware/auth");
 // @route GET api/users
 // @desc Get ALl users
 // @access Public
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
         return res.json(users);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).send("Server Error");
+        return res.status(500).json([{ msg: "Server Error" }]);
     }
 });
 
@@ -27,17 +28,13 @@ router.get("/", async (req, res) => {
 router.post(
     "/",
     [
-        check("name", "Name is Required")
-            .not()
-            .isEmpty(),
+        check("name", "Name is Required").not().isEmpty(),
         check("email", "Please enter a valid email").isEmail(),
         check(
             "password",
             "Please enter a password with 6 or characters"
         ).isLength({ min: 6 }),
-        check("userType", "Not a valid user type")
-            .not()
-            .isEmpty()
+        check("userType", "Not a valid user type").not().isEmpty(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -54,9 +51,9 @@ router.post(
             return res.status(403).json({
                 errors: [
                     {
-                        msg: "Wrong User Type"
-                    }
-                ]
+                        msg: "Wrong User Type",
+                    },
+                ],
             });
         }
         try {
@@ -73,7 +70,7 @@ router.post(
                 name,
                 email,
                 password,
-                userType
+                userType,
             });
 
             // Encrypt Password
@@ -85,8 +82,8 @@ router.post(
             const payload = {
                 user: {
                     id: newUser.id,
-                    userType: newUser.userType
-                }
+                    userType: newUser.userType,
+                },
             };
 
             // return jsonwebtoken
@@ -101,10 +98,42 @@ router.post(
             );
         } catch (err) {
             console.error(err.message);
-            // 500 - Server Error
-            return res.status(500).send("Server Error");
+            return res.status(500).json([{ msg: "Server Error" }]);
         }
     }
 );
 
+// @route PUT api/users/password
+// @desc Change User's Password
+// @access Private
+
+router.put("/", auth, async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    const { id } = req.user;
+
+    try {
+        let user = await User.findById(id);
+        if (!user) {
+            return res
+                .status(400)
+                .json({ errors: [{ msg: "No such user exists" }] });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({
+                errors: [{ msg: "Old Password do not Match. Try Again." }],
+            });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(newPassword, salt);
+        user.password = hash;
+        await User.save();
+
+        return res.json({ msg: "Password Successfully Changed" });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json([{ msg: "Server Error" }]);
+    }
+});
 module.exports = router;

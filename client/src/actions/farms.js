@@ -83,14 +83,14 @@ export const addFarm = (farmDetail) => async (dispatch) => {
             type: FARM_ADD_SUCCESS,
             payload: res.data,
         });
-        dispatch(setAlert("farm added successfully", 'success'))
+        dispatch(setAlert("Farm added successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: FARM_ADD_FAILURE,
         });
-        dispatch(setAlert("farm addition failed", 'error'))
+        dispatch(setAlert("Farm addition failed", "error"));
     }
 };
 
@@ -117,14 +117,14 @@ export const editFarm = (id, newfarmDetail) => async (dispatch) => {
             type: FARM_EDIT_SUCCESS,
             payload: res.data,
         });
-        dispatch(setAlert("farm edited successfully", 'success'))
+        dispatch(setAlert("Farm edited successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: FARM_EDIT_FAILURE,
         });
-        dispatch(setAlert("farm edit failed", 'error'))
+        dispatch(setAlert("Farm edit failed", "error"));
     }
 };
 
@@ -141,13 +141,13 @@ export const deleteFarm = (id) => async (dispatch) => {
             type: FARM_DELETE_SUCCESS,
             payload: id,
         });
-        dispatch(setAlert("farm deleted successfully", 'success'))
+        dispatch(setAlert("Farm deleted successfully", "success"));
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
         dispatch({
             type: FARM_DELETE_FAILURE,
         });
-        dispatch(setAlert("farm deletion failed", 'error'))
+        dispatch(setAlert("Farm deletion failed", "error"));
     }
 };
